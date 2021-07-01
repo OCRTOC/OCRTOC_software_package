@@ -116,8 +116,11 @@ First, open 3 terminals and execute the following commands in each of the termin
 bash tools/exec_container.sh
 
 # In the docker image
-# Start the simulator and ros interface
+# Start the PyBullet simulator and ros interface
 roslaunch ocrtoc_task bringup_simulator_pybullet.launch task_index:=0-0
+
+# Start the Sapien simulator and ros interface
+# roslaunch ocrtoc_task bringup_simulator_sapien.launch task_index:=0-0
 ```
 
 ```bash
