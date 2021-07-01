@@ -1,0 +1,7 @@
+<launch>
+  <arg name="config" default="$(find ocrtoc_perception)/config/perception_franka_in_real.yaml" doc="perception configuration file name"/>
+  <node name="perception_entrance" pkg="ocrtoc_perception" type="perception_entrance.py" output="screen">
+    <param name="config" value="$(arg config)"/>
+    <param name="service_name" value="perception_action_target"/>
+  </node>
+</launch>

@@ -1,0 +1,8 @@
+.idea/
+*~
+/CMakeLists.txt
+*.pyc
+/scan/
+# SAPIEN cache file
+*.convex.stl
+

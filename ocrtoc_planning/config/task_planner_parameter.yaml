@@ -1,0 +1,10 @@
+max_repeat_call: 2
+grasp_distance: 0.025
+min_angle: 150
+grasp_up_translation: 0.001
+# grasp pose search list in motion planning stage: range(start_grasp_index, end_grasp_index)
+# index meaning: {0: original_grasp_pose_from_perception, 1: rotated_grasp_pose, 2: up_down_grasp_pose}
+start_grasp_index: 0
+end_grasp_index: 1
+pick_via_up: False
+distance_threshold: 0.08

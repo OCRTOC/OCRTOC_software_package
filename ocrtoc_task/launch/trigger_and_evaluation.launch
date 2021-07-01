@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="task_index" default="0-0" doc="Task index."/>
+
+  <node pkg="ocrtoc_task" type="trigger.py" name="trigger" output="screen">
+    <param name="task_file" value="$(find ocrtoc_materials)/targets/$(arg task_index).yaml"/>
+    <param name="task_index" value="$(arg task_index)"/>
+    <param name="log_file" value="$(find ocrtoc_task)/evaluation/$(arg task_index)_grasp_detection.txt"/>
+    <param name="evaluation" value="True"/>
+  </node>
+</launch>

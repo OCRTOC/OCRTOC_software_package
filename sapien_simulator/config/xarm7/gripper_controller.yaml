@@ -1,0 +1,8 @@
+xarm7_gripper:
+  type: position_controllers/GripperActionController
+  joint: robotiq_2f_85_left_driver_joint
+  action_monitor_rate: 20
+  goal_tolerance: 0.002
+  max_effort: 100
+  stall_velocity_threshold: 0.001
+stall_timeout: 1.0

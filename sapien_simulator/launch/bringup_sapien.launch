@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  <rosparam param="/use_sim_time">True</rosparam>
+  <arg name="gui" default="true" doc="Starts sapien gui"/>
+  <arg name="task_index" default="0-0" doc="Task index."/>
+  <arg name="materials_dir" default="$(find ocrtoc_materials)" doc="The models and scenes path"/>
+  <arg name="world_path" value="$(arg materials_dir)/scenes/$(arg task_index).world"/>
+  <arg name="robot" default="panda" doc="Robot arm to bring up"/>
+
+  <node pkg="sapien_simulator" type="sapien_env.py" name="sapien_env" respawn="false" output="screen" required="true" >
+    <param name="gui" value="$(arg gui)" />
+    <param name="materials_dir" value="$(arg materials_dir)" />
+    <param name="robot" value="$(arg robot)" />
+    <param name="world_path" value="$(arg world_path)" />
+    <remap from="/kinect/color/image_raw" to="/kinect/color/image_rect_color" />
+    <remap from="/kinect/depth/image_raw" to="/kinect/depth_to_color/image_raw" />
+    <remap from="/realsense/depth/image_raw" to="/realsense/aligned_depth_to_color/image_raw" />
+    <remap from="/panda_gripper/gripper_cmd" to="/franka_gripper/gripper_action" />
+  </node>
+
+  <!-- load robot definition -->
+  <include file="$(find sapien_simulator)/launch/$(arg robot)_upload.launch" />
+  <include file="$(find sapien_simulator)/launch/camera_info_pub.launch" />
+</launch>

@@ -1,0 +1,1 @@
+assimp export d435.dae d435.obj

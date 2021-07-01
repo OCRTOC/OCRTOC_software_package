@@ -1,0 +1,3 @@
+string[] target_object_list
+---
+ocrtoc_msg/PerceptionResult[] perception_result_list

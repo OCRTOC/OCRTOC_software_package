@@ -1,0 +1,5 @@
+string object_name
+bool be_recognized
+geometry_msgs/PoseStamped object_pose
+bool is_graspable
+geometry_msgs/PoseStamped grasp_pose

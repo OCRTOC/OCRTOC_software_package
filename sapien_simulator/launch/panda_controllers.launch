@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- robot state publisher -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"
+        respawn="false" output="screen">
+    <param name="publish_frequency" type="double" value="30.0"/>
+    <param name="tf_prefix" type="string" value=""/>
+  </node>
+
+  <!-- gripper_controller -->
+  <rosparam file="$(find sapien_simulator)/config/panda/gripper_controller.yaml" command="load"/>
+  <node name="gripper_controller_spawner" pkg="controller_manager" type="controller_manager"
+        args="spawn panda_gripper" respawn="false" output="screen"/>
+
+  <!-- arm_controller -->
+  <rosparam file="$(find sapien_simulator)/config/panda/arm_controller.yaml" command="load"/>
+  <node name="traj_controller_spawner" pkg="controller_manager" type="controller_manager"
+        args="spawn position_joint_trajectory_controller " respawn="false" output="screen"/>
+
+  <!-- joint_state_controller -->
+  <rosparam file="$(find sapien_simulator)/config/panda/joint_state_controller.yaml" command="load"/>
+  <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager"
+        args="spawn joint_state_controller" respawn="false" output="screen"/>
+</launch>

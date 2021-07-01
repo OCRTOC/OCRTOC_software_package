@@ -1,0 +1,3 @@
+---
+geometry_msgs/PoseStamped current_pose
+float64[] joint_position_list

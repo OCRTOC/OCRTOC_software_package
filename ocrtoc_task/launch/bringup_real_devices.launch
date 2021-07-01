@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_ip" default="172.16.0.2" doc="franka IP"/>
+  <arg name="load_gripper" default="true" doc="franka gripper"/>
+
+  <!-- Realsense D435i -->
+  <include file="$(find ocrtoc_task)/launch/ocrtoc_realsense.launch" />
+
+  <!-- Kinect DK -->
+  <node pkg="ocrtoc_task" type="timed_roslaunch.sh"
+    args="10 ocrtoc_task ocrtoc_kinect.launch"
+    name="timed_roslaunch_kinect" output="screen" >
+  </node>
+
+  <!-- Franka -->
+  <include file="$(find ocrtoc_task)/launch/ocrtoc_franka.launch" >
+    <arg name="robot_ip" value="$(arg robot_ip)"/>
+    <arg name="load_gripper" value="$(arg load_gripper)"/>
+  </include>
+
+</launch>

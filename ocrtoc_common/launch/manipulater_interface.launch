@@ -1,0 +1,3 @@
+<launch>
+  <node name="manipulator_interface_node" pkg="ocrtoc_common" type="manipulator_interface_node.py" output="screen" />
+</launch>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+  <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
+  <xacro:include filename="$(find ocrtoc_task)/config/urdf/hand.xacro"/>
+  <xacro:panda_arm safety_distance="0.03"/>
+  <xacro:hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8" safety_distance="0.03"/>
+
+  <xacro:arg name="kinect_config" default="$(find ocrtoc_task)/config/extrinsic/kinect.yaml"/>
+  <xacro:property name="kinect_values" value="${load_yaml('$(arg kinect_config)')}"/>
+  <xacro:arg name="realsense_config" default="$(find ocrtoc_task)/config/extrinsic/realsense.yaml"/>
+  <xacro:property name="realsense_values" value="${load_yaml('$(arg realsense_config)')}"/>
+
+  <link name="world" />
+
+  <link name="table">
+    <visual>
+      <geometry>
+        <mesh filename="package://ocrtoc_task/config/meshes/table/visual/table.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://ocrtoc_task/config/meshes/table/collision/table.obj"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="panda_link0"/>
+    <origin xyz="-0.43 0.0 0.01" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <joint name="table_joint" type="fixed">
+    <parent link="world"/>
+    <child link="table"/>
+    <origin xyz="0.0 0.0 -0.39" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <!-- realsense camera -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+  <sensor_d435 parent="${realsense_values['robot_effector_frame']}" name="realsense" use_nominal_extrinsics="false" >
+    <origin xyz="${realsense_values['transformation']['x']} ${realsense_values['transformation']['y']} ${realsense_values['transformation']['z']}"
+            rpy="${realsense_values['transformation']['roll']} ${realsense_values['transformation']['pitch']} ${realsense_values['transformation']['yaw']}"/>
+  </sensor_d435>
+
+  <!-- kinect camera -->
+  <xacro:include filename="$(find azure_kinect_ros_driver)/urdf/azure_kinect.urdf.xacro" />
+  <joint name="base_kinect_joint" type="fixed">
+    <parent link="${kinect_values['robot_base_frame']}" />
+    <child link = "${kinect_values['tracking_base_frame']}" />
+    <origin xyz="${kinect_values['transformation']['x']} ${kinect_values['transformation']['y']} ${kinect_values['transformation']['z']}"
+            rpy="${kinect_values['transformation']['roll']} ${kinect_values['transformation']['pitch']} ${kinect_values['transformation']['yaw']}"/>
+  </joint>
+
+</robot>

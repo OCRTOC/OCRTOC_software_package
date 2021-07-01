@@ -1,0 +1,306 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <model name="bowl_v1">
+      <link name="link_bowl_v1">
+        <collision name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/bowl/collision.obj</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0</max_vel>
+                <min_depth>0.0001</min_depth>
+                <kp>1e8</kp>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/bowl/textured.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <inertial>
+          <mass>0.1</mass>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+            <ixx>8e-05</ixx>
+            <iyy>0.0002</iyy>
+            <izz>0.0002</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+      <pose>-0.0 -0.28 0.07 -0.0 0.0 0.0</pose>
+    </model>
+    <model name="doraemon_bowl_v1">
+      <link name="link_doraemon_bowl_v1">
+        <collision name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/doraemon_bowl/collision.obj</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0</max_vel>
+                <min_depth>0.0001</min_depth>
+                <kp>1e8</kp>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/doraemon_bowl/textured.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <inertial>
+          <mass>0.1</mass>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+            <ixx>8e-05</ixx>
+            <iyy>0.0002</iyy>
+            <izz>0.0002</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+      <pose>-0.05 0.25 0.07 0.01 0.01 1.57</pose>
+    </model>
+    <model name="doraemon_plate_v1">
+      <link name="link_doraemon_plate_v1">
+        <collision name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/doraemon_plate/collision.obj</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0</max_vel>
+                <min_depth>0.0001</min_depth>
+                <kp>1e8</kp>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/doraemon_plate/textured.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <inertial>
+          <mass>0.1</mass>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+            <ixx>8e-05</ixx>
+            <iyy>0.0002</iyy>
+            <izz>0.0002</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+      <pose>-0.06 0.24 0.11 -0.0 0.01 1.57</pose>
+    </model>
+    <model name="fork_v1">
+      <link name="link_fork_v1">
+        <collision name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/fork/collision.obj</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0</max_vel>
+                <min_depth>0.0001</min_depth>
+                <kp>1e8</kp>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/fork/textured.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <inertial>
+          <mass>0.1</mass>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+            <ixx>8e-05</ixx>
+            <iyy>0.0002</iyy>
+            <izz>0.0002</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+      <pose>0.0 -0.4 0.05 -0.01 0.05 -0.0</pose>
+    </model>
+    <model name="knife_v1">
+      <link name="link_knife_v1">
+        <collision name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/knife/collision.obj</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0</max_vel>
+                <min_depth>0.0001</min_depth>
+                <kp>1e8</kp>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/knife/textured.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <inertial>
+          <mass>0.1</mass>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+            <ixx>8e-05</ixx>
+            <iyy>0.0002</iyy>
+            <izz>0.0002</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+      <pose>0.13 0.2 0.05 3.09 0.04 -0.49</pose>
+    </model>
+    <model name="plate_v1">
+      <link name="link_plate_v1">
+        <collision name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/plate/collision.obj</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0</max_vel>
+                <min_depth>0.0001</min_depth>
+                <kp>1e8</kp>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="default">
+          <geometry>
+            <mesh>
+              <uri>package://models/plate/textured.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <inertial>
+          <mass>0.1</mass>
+          <pose>0 0 0 0 0 0</pose>
+          <inertia>
+            <ixx>8e-05</ixx>
+            <iyy>0.0002</iyy>
+            <izz>0.0002</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+      <pose>0.1 -0.1 0.04 0.0 0.0 0.0</pose>
+    </model>
+    <physics type="ode">
+      <max_contacts>50</max_contacts>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>75</iters>
+        </solver>
+        <constraints>
+          <contact_max_correcting_vel>0</contact_max_correcting_vel>
+          <contact_surface_layer>0</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+  </world>
+</sdf>

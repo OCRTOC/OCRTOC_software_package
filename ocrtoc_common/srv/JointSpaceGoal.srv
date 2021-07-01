@@ -1,0 +1,4 @@
+float64[] joint_goal
+---
+bool successed
+string text

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="task_index" default="0-0" doc="Task index."/>
+
+  <node pkg="ocrtoc_task" type="calculate_score_from_dump_pose.py" name="calculate_score_from_dump_pose" output="screen">
+    <param name="task_index" value="$(arg task_index)"/>
+  </node>
+</launch>

@@ -1,0 +1,3 @@
+<launch>
+  <node name="fake_perception" pkg="ocrtoc_perception" type="fake_perception.py" output="screen" />
+</launch>
