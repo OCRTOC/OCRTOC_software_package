@@ -300,9 +300,6 @@ docker:
 ```
 
 
-## Video Tutorial
-A video tutorial on how to use the OCRTOC software package will come soon.
-
 ## Labelled Dataset (Real World)
 To ease your development process we provide a labelled real world dataset. To use this dataset you need to download the toolkit from [https://github.com/OCRTOC/OCRTOC_dataset_toolkit](https://github.com/OCRTOC/OCRTOC_dataset_toolkit).
 
@@ -311,6 +308,9 @@ In this dataset, a lot of scenes with multiple objects are scanned using a wrist
 - Number of scenes: 76
 - Number of used objects: 33
 - Number of labelled RGB-D images: 6004
+
+## Video Tutorial
+A video tutorial on how to use the OCRTOC software package will come soon.
 
 ## Frequently Asked Question (FAQ)
 
