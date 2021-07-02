@@ -329,7 +329,7 @@ primaryClass={cs.RO}
 }
 ```
 
-## Technical support
+## Technical Support
 If you encounter technical issues regarding this software package, please contact us at [info@ocrtoc.org](mailto://info@ocrtoc.org) or raise a github issue.
 
 
