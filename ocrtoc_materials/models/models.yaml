@@ -354,4 +354,23 @@ plastic_lemon:
   x: 1
   y: 1
   z: 1
-
+black_marker:
+  x: 1
+  y: 1
+  z: 1
+blue_marker:
+  x: 1
+  y: 1
+  z: 1
+repellent:
+  x: 1
+  y: 1
+  z: 1
+shampoo:
+  x: 1
+  y: 1
+  z: 1
+stapler_2:
+  x: 1
+  y: 1
+  z: 1
