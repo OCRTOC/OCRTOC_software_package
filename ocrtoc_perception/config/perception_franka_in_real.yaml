@@ -11,6 +11,7 @@ transform_from_frame: world
 graspnet_checkpoint_path: src/ocrtoc_perception/graspnet/logs/log_rs/checkpoint.tar
 both_camera_fix_pose_file: config/arm_poses_Franka_realsense.csv
 realsense_camera_fix_pose_file: config/arm_poses_Franka_realsense.csv
+# Select a pose estimation method [icp|superglue]
 pose_method: superglue
 
 reconstruction:
