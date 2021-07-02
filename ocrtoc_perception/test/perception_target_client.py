@@ -9,11 +9,7 @@ if __name__ == "__main__":
         service_call = rospy.ServiceProxy('/perception_action_target',
                                           PerceptionTarget)
         request = PerceptionTargetRequest()
-        request.target_object_list = ['lipton_tea',
-                                      'orion_pie',
-                                      'plastic_banana',
-                                      'suger_1',
-                                      'potato_chip_1'] # 1-1
+        request.target_object_list = ['lipton_tea'] # 0-0
         response = service_call(request)
         print(response)
     except rospy.ServiceException as e:
