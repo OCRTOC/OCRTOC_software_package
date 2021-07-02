@@ -78,7 +78,7 @@ bash tools/exec_container.sh
 ```
 
 ### Set up Environment inside the Docker Container
-Since some parts of the environment are given as source code, they cannot be installed while building the docker image. You need to run the following command to set up the environment. However, you don't need to run them when you restart the docker container. 
+Since some parts of the environment are given as source code, they cannot be installed while building the docker image. You need to run the following commands to set up the environment. However, you don't need to run them when you restart the docker container. 
 
 ```bash
 # Enter the docker container
