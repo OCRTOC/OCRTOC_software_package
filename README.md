@@ -331,3 +331,9 @@ primaryClass={cs.RO}
 
 ## Technical support
 If you encounter technical issues regarding this software package, please contact us at [info@ocrtoc.org](mailto://info@ocrtoc.org) or raise a github issue.
+
+
+## OCRTOC Fan Group
+You can also join our fan group on [Slack](https://ocrtoc.slack.com/join/shared_invite/zt-se6z93pf-Wra_ZMG2Oi63i9LzUpjiEw#/shared-invite/email) to give us feedbacks and stay tuned.
+
+
