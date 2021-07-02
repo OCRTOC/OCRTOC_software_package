@@ -1,10 +1,10 @@
 group_name: "panda_arm"
 max_try: 3
-up_distance: 0.15
-exit_distance: 0.1
+up_distance: 0.25
+exit_distance: 0.2
 entrance_distance: -0.06
-up1: 0.1
-up2: 0.1
+up1: 0.2
+up2: 0.2
 max_attempts: 5
 plan_step_length: 0.02
 via_pose1_px: 0.25
