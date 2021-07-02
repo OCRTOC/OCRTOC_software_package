@@ -273,7 +273,7 @@ class Perceptor():
         else:
             rospy.roserr('Unknown pose method:{}'.format(pose_method))
             raise ValueError('Unknown pose method:{}'.format(pose_method))
-        if self.debug:
+        if self.debug and pose_method == 'icp':
             # Visualize 6dpose estimation result.
             geolist = []
             geolist.append(full_pcd)
@@ -452,8 +452,8 @@ class Perceptor():
 
         # Assign the Best Grasp Pose on Each Object
         grasp_poses, remain_gg = self.assign_grasp_pose(gg, object_poses)
-        if self.debug:
-            o3d.visualization.draw_geometries([full_pcd, *remain_gg.to_open3d_geometry_list()])
+        if self.debug and pose_method == 'icp':
+            o3d.visualization.draw_geometries([full_pcd, *remain_gg])
         return object_poses, grasp_poses
 
     def get_response(self, object_list):

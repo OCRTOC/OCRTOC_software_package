@@ -12,13 +12,16 @@ catkin_package(
 
 install(DIRECTORY
   config
-  glsl_shader
   launch
+  meshes
   urdf
-  rviz
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 install(PROGRAMS
   scripts/sapien_env.py
+  scripts/asset_utils.py
+  scripts/camera_info_pub.py
+  scripts/robot_const.py
+  scripts/viz_urdf.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
