@@ -214,10 +214,10 @@ python test_transform_interface.py # also executable with pyhon3
 python test_gripper_interface.py # also executable with pyhon3
 ```
 
-### Object 6D Poses
-You can read the object 6D poses from the simulators via `/get_model_state` interface. An example is given in [`ocrtoc_task/scripts/get_6dpose_dump_simulator.py`](ocrtoc_task/scripts/get_6dpose_dump_simulator.py).
+### Object 6D Poses in Simulation
+For debugging purposes, you can read the object 6D poses in simulation via `/get_model_state` interface. An example is given in [`ocrtoc_task/scripts/get_6dpose_dump_simulator.py`](ocrtoc_task/scripts/get_6dpose_dump_simulator.py).
 
-However, you should **NEVER READ THE OBJECT 6D POSES DIRECTLY FROM THE SIMULATOR IN YOUR SOLUTION**. Violation of the rule will result in invalid scores. 
+However, you should **NEVER READ THE OBJECT 6D POSES DIRECTLY FROM SIMULATION IN YOUR SOLUTION**. Violation of the rule will result in invalid scores. 
 
 ## Evaluation
 
