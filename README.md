@@ -310,11 +310,12 @@ In this dataset, a lot of scenes with multiple objects are scanned using a wrist
 - Number of labelled RGB-D images: 6004
 
 ## Video Tutorial
-To give you a more intuitive impression on how to use the whole OCRTOC software packages, the following video tutorials are provided:
-- Software package:
-- Program execution and baseline solution:
-- Submission:
-- Dataset: 
+To give you a more intuitive impression on how to use the whole OCRTOC software package, the following video tutorials are provided:
+- Software package:  [Youtube](), [BiliBili]().
+- Program execution and baseline solution:  [Youtube](), [BiliBili]().
+- Submission:  [Youtube](), [BiliBili]().
+- Dataset:  [Youtube](), [BiliBili]().
+
 
 ## Frequently Asked Question (FAQ)
 
