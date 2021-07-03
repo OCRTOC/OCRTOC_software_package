@@ -1,7 +1,7 @@
 # Open Cloud Robot Table Organization Challenge (OCRTOC)
 
 ## Overview
-This is the OCRTOC software package. For more information on OCRTOC please visit the homepage: [www.ocrtoc.org](http://www.ocrtoc.org). A brief introduction about OCRTOC is available on [Youtube](https://www.youtube.com/watch?v=9dlWUbPF2Cc&t=1s) and [BiliBili](https://www.bilibili.com/video/BV1MV411W7aa/).
+This is the OCRTOC software package. The homepage address is: [www.ocrtoc.org](http://www.ocrtoc.org). A brief video introduction about OCRTOC is available on [Youtube](https://www.youtube.com/watch?v=9dlWUbPF2Cc&t=1s) and [BiliBili](https://www.bilibili.com/video/BV1MV411W7aa/).
 
 To take part in OCRTOC, you need to develop your own solution using this software package. After uploading your solution to the competition platform, the performance of your solution will be evaluated. 
 
