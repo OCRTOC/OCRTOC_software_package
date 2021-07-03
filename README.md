@@ -311,10 +311,10 @@ In this dataset, a lot of scenes with multiple objects are scanned using a wrist
 
 ## Video Tutorial
 To give you a more intuitive impression on how to use the whole OCRTOC software package, the following video tutorials are provided:
-- Software package:  [Youtube](), [BiliBili](https://www.bilibili.com/video/BV1EB4y1T7jK/).
-- Program execution and baseline solution:  [Youtube](), [BiliBili](https://www.bilibili.com/video/BV1Cq4y1s7Fp/).
-- Submission:  [Youtube](), [BiliBili](https://www.bilibili.com/video/BV1AX4y1w7UN/).
-- Dataset:  [Youtube](), [BiliBili](https://www.bilibili.com/video/BV14L411p7kK/).
+- Software package:  [Youtube](https://www.youtube.com/watch?v=WRdUDNuTZ_0), [BiliBili](https://www.bilibili.com/video/BV1EB4y1T7jK/).
+- Program execution and baseline solution:  [Youtube](https://www.youtube.com/watch?v=FT6-bDch258), [BiliBili](https://www.bilibili.com/video/BV1Cq4y1s7Fp/).
+- Submission:  [Youtube](https://www.youtube.com/watch?v=ghslvJfp_Ys), [BiliBili](https://www.bilibili.com/video/BV1AX4y1w7UN/).
+- Dataset:  [Youtube](https://www.youtube.com/watch?v=PGvtBTyZqhU), [BiliBili](https://www.bilibili.com/video/BV14L411p7kK/).
 
 
 ## Frequently Asked Question (FAQ)
