@@ -15,8 +15,8 @@
         <mesh filename="meshes/visual/link0.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <link name="panda_link1">
     <visual>
       <geometry>
@@ -28,8 +28,8 @@
         <mesh filename="meshes/visual/link1.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint1" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
     <origin rpy="0 0 0" xyz="0 0 0.333"/>
@@ -38,6 +38,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="87" lower="-2.8973" upper="2.8973" velocity="2.1750"/>
   </joint>
+
   <link name="panda_link2">
     <visual>
       <geometry>
@@ -49,8 +50,8 @@
         <mesh filename="meshes/visual/link2.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint2" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-1.7628" soft_upper_limit="1.7628"/>
     <origin rpy="-1.57079632679 0 0" xyz="0 0 0"/>
@@ -70,8 +71,8 @@
         <mesh filename="meshes/visual/link3.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint3" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
     <origin rpy="1.57079632679 0 0" xyz="0 -0.316 0"/>
@@ -91,8 +92,8 @@
         <mesh filename="meshes/visual/link4.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint4" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-3.0718" soft_upper_limit="-0.0698"/>
     <origin rpy="1.57079632679 0 0" xyz="0.0825 0 0"/>
@@ -101,6 +102,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="87" lower="-3.0718" upper="-0.0698" velocity="2.1750"/>
   </joint>
+
   <link name="panda_link5">
     <visual>
       <geometry>
@@ -112,8 +114,8 @@
         <mesh filename="meshes/visual/link5.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint5" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
     <origin rpy="-1.57079632679 0 0" xyz="-0.0825 0.384 0"/>
@@ -122,6 +124,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="12" lower="-2.8973" upper="2.8973" velocity="2.6100"/>
   </joint>
+
   <link name="panda_link6">
     <visual>
       <geometry>
@@ -133,8 +136,8 @@
         <mesh filename="meshes/visual/link6.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint6" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-0.0175" soft_upper_limit="3.7525"/>
     <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
@@ -143,6 +146,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="12" lower="-0.0175" upper="3.7525" velocity="2.6100"/>
   </joint>
+
   <link name="panda_link7">
     <visual>
       <geometry>
@@ -154,8 +158,8 @@
         <mesh filename="meshes/visual/link7.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <joint name="panda_joint7" type="revolute">
     <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="-2.8973" soft_upper_limit="2.8973"/>
     <origin rpy="1.57079632679 0 0" xyz="0.088 0 0"/>
@@ -164,9 +168,8 @@
     <axis xyz="0 0 1"/>
     <limit effort="12" lower="-2.8973" upper="2.8973" velocity="2.6100"/>
   </joint>
-  <link name="panda_link8">
 
-  </link>
+  <link name="panda_link8"/>
   <joint name="panda_joint8" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0.107"/>
     <parent link="panda_link7"/>
@@ -189,8 +192,8 @@
         <mesh filename="meshes/visual/hand.dae"/>
       </geometry>
     </collision>
-
   </link>
+
   <link name="panda_leftfinger">
     <visual>
       <geometry>
@@ -233,8 +236,6 @@
     <mimic joint="panda_finger_joint1"/>
   </joint>
 
-
-
   <joint name="realsense_camera_joint" type="fixed">
     <origin rpy="-0.348 -1.564 -2.784" xyz="0.051 -0.019 0.059"/>
     <parent link="panda_hand"/>
@@ -268,7 +269,7 @@
   </link>
 
   <joint name="realsense_optical_joint" type="fixed">
-    <origin rpy="-1.571 0, -1.571" xyz="0.0 0.015 0.0"/>
+    <origin rpy="-1.571 0 -1.571" xyz="0.0 0.015 0.0"/>
     <parent link="realsense_link"/>
     <child link="realsense_color_optical_frame"/>
   </joint>
@@ -300,7 +301,7 @@
     <parent link="realsense_color_optical_frame"/>
     <child link="realsense_depth_optical_frame"/>
   </joint>
-  
+
   <link name="realsense_depth_optical_frame"></link>
 
   <joint name="panda_hand_to_tool" type="fixed">
@@ -325,6 +326,30 @@
 
   <link name="world"></link>
 
+  <material name="grey">
+    <color rgba="0.8 0.8 0.8 1"/>
+  </material>
+
+  <link name="table">
+    <visual>
+      <geometry>
+        <mesh filename="meshes/visual/table.dae"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="meshes/visual/table.obj"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="table_joint" type="fixed">
+    <parent link="world"/>
+    <child link="table"/>
+    <origin xyz="0.0 0.0 -0.39" rpy="0.0 0.0 0.0"/>
+  </joint>
+
   <joint name="panda_ee_link_joint" type="fixed">
     <origin rpy="0.0 0.0 -0.785" xyz="0.0 0.0 0.15"/>
     <parent link="panda_link8"/>
@@ -340,7 +365,6 @@
   </joint>
 
   <link name="opengl_rgb_camera_link"></link>
-
 
   <joint name="kinect_opengl_virtual_joint" type="fixed">
     <origin rpy="-1.571 0 -1.571" xyz="0.0 0.0 0.0"/>

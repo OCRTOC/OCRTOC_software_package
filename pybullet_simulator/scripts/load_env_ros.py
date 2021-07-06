@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from pybullet_env import SimEnv, SimRobot, Manipulator, Camera
-from pybullet_env import Box, Cylinder
+#from pybullet_env import Box, Cylinder
 import numpy as np
 import pybullet
 import os
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     pkg_path = rospack.get_path('pybullet_simulator')
 
     sim_env = SimEnv(sim_rate=1000, GUI=True)
-    sim_env.resetGUIView(distance=0.8, yaw=90, pitch=-60, target_position=[0,0,0.0])
+    sim_env.resetGUIView(distance=0.8, yaw=90, pitch=-45, target_position=[0,0,0.8])
     sim_env.resetLightPosition(lightPosition=[1,0,1])
 
     # panda arm
@@ -62,7 +62,8 @@ if __name__ == '__main__':
     panda_config_path = os.path.join(pkg_path, 'robots/franka/config/panda_arm_hand.yaml')
     robot = Manipulator.loadFromURDF(urdf_path=panda_urdf_path, config_path=panda_config_path)
     print('robot id:{}, type:{}'.format(robot.id, type(robot.id)))
-    
+
+    '''
     # table, objects will be placed on top of it
     table = Box.fromParam(basePosition=[0, 0, 0.02],
                           baseRPY=[0, 0, 0],
@@ -73,6 +74,7 @@ if __name__ == '__main__':
     cylinder = Cylinder(basePosition=[-0.42, 0, 0.02], baseRPY=[0, 0, 0],
                         radius=0.1, length=0.04, rgbaColor=[0.3, 0.3, 0.3, 1],
                         useFixedBase=True)
+    '''
 
     # load scene
     folder = os.path.join(rospack.get_path('ocrtoc_materials'), 'scenes')
