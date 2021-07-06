@@ -63,19 +63,6 @@ if __name__ == '__main__':
     robot = Manipulator.loadFromURDF(urdf_path=panda_urdf_path, config_path=panda_config_path)
     print('robot id:{}, type:{}'.format(robot.id, type(robot.id)))
 
-    '''
-    # table, objects will be placed on top of it
-    table = Box.fromParam(basePosition=[0, 0, 0.02],
-                          baseRPY=[0, 0, 0],
-                          size=[0.6, 1.2, 0.04],
-                          useFixedBase=True)
-
-    # cylinder to place the robot
-    cylinder = Cylinder(basePosition=[-0.42, 0, 0.02], baseRPY=[0, 0, 0],
-                        radius=0.1, length=0.04, rgbaColor=[0.3, 0.3, 0.3, 1],
-                        useFixedBase=True)
-    '''
-
     # load scene
     folder = os.path.join(rospack.get_path('ocrtoc_materials'), 'scenes')
     task_index = rospy.get_param('~task_index')
