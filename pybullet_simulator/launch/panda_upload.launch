@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <launch>
   <param name="robot_description"
-         command="$(find xacro)/xacro --inorder '$(find pybullet_simulator)/robots/franka/urdf/panda_arm_hand_realsense.urdf'" />
-         <!--   panda_arm_hand.urdf.xacro   -->
+         command="$(find xacro)/xacro --inorder '$(find pybullet_simulator)/robots/franka/urdf/panda_arm_hand_realsense_ros.urdf'" />
   <include file="$(find pybullet_simulator)/launch/panda_controllers.launch"/>
 </launch>
