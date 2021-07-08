@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.11 -0.2 0.07 -0.0 0.0 0.0</pose>
+      <pose>0.11 -0.2 0.03 -0.0 0.0 0.0</pose>
     </model>
     <model name="conditioner_v1">
       <link name="link_conditioner_v1">
@@ -95,7 +95,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.0 0.13 0.0 0.0 1.57</pose>
+      <pose>0.1 0.0 0.09 0.0 0.0 1.57</pose>
     </model>
     <model name="soap_v1">
       <link name="link_soap_v1">
@@ -143,7 +143,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.2 0.06 0.06 -0.01 -1.39</pose>
+      <pose>0.1 0.2 0.02 0.06 -0.01 -1.39</pose>
     </model>
     <model name="soap_dish_v1">
       <link name="link_soap_dish_v1">
@@ -191,7 +191,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.2 0.06 0.0 0.0 2.57</pose>
+      <pose>0.1 0.2 0.02 0.0 0.0 2.57</pose>
     </model>
     <model name="toothpaste_1_v1">
       <link name="link_toothpaste_1_v1">
@@ -239,7 +239,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.11 -0.17 0.13 -0.04 0.92 -1.59</pose>
+      <pose>0.11 -0.17 0.09 -0.04 0.92 -1.59</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>
