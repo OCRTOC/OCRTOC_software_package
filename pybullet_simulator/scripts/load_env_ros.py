@@ -11,7 +11,7 @@ from rosgraph_msgs.msg import Clock
 import rospkg
 import rospy
 
-TABLE_HEIGHT = 0.775 # meter
+TABLE_HEIGHT = 0.778 # meter
 
 def get_model_id_name_map():
     num_bodies = pybullet.getNumBodies()
