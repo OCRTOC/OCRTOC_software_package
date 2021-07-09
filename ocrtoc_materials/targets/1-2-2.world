@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.0 0.3 0.08 -0.01 -0.01 -0.0</pose>
+      <pose>-0.0 0.3 0.04 -0.01 -0.01 -0.0</pose>
     </model>
     <model name="gelatin_box_v1">
       <link name="link_gelatin_box_v1">
@@ -95,7 +95,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.01 0.31 0.32 -0.05 -0.08 -0.01</pose>
+      <pose>-0.01 0.31 0.28 -0.05 -0.08 -0.01</pose>
     </model>
     <model name="lipton_tea_v1">
       <link name="link_lipton_tea_v1">
@@ -143,7 +143,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.0 0.3 0.16 -0.03 -0.04 -0.02</pose>
+      <pose>-0.0 0.3 0.12 -0.03 -0.04 -0.02</pose>
     </model>
     <model name="orion_pie_v1">
       <link name="link_orion_pie_v1">
@@ -191,7 +191,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.0 0.31 0.23 1.63 0.05 2.93</pose>
+      <pose>0.0 0.31 0.19 1.63 0.05 2.93</pose>
     </model>
     <model name="pudding_box_v1">
       <link name="link_pudding_box_v1">
@@ -239,7 +239,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.0 0.31 0.29 -0.06 -0.08 0.05</pose>
+      <pose>-0.0 0.31 0.25 -0.06 -0.08 0.05</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>

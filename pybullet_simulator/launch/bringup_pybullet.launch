@@ -1,13 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="task_index" default="1-1" doc="Task index"/>
+  <arg name="task_index" default="0-0" doc="Task index"/>
   <node pkg="pybullet_simulator" type="load_env_ros.py" name="pybullet_env" respawn="false" output="screen" >
     <param name="task_index" value="$(arg task_index)"/>
   </node>
 
-  <!-- load controllers -->
-  <include file="$(find pybullet_simulator)/launch/controllers.launch"/>
-
   <node pkg="pybullet_simulator" type="ros_interface.py" name="ros_interface" respawn="false" output="screen" />
-
+  <include file="$(find pybullet_simulator)/launch/panda_upload.launch"/>
 </launch>

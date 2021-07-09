@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.01 -0.39 0.09 -0.0 -0.0 1.58</pose>
+      <pose>0.01 -0.39 0.05 -0.0 -0.0 1.58</pose>
     </model>
     <model name="clear_box_v2">
       <link name="link_clear_box_v2">
@@ -95,7 +95,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.0 0.39 0.09 0.0 0.0 1.57</pose>
+      <pose>0.0 0.39 0.05 0.0 0.0 1.57</pose>
     </model>
     <model name="plastic_peach_v1">
       <link name="link_plastic_peach_v1">
@@ -143,7 +143,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.0 0.4 0.05 0.23 0.29 1.36</pose>
+      <pose>-0.0 0.4 0.01 0.23 0.29 1.36</pose>
     </model>
     <model name="plastic_strawberry_v1">
       <link name="link_plastic_strawberry_v1">
@@ -191,7 +191,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.04 0.36 0.05 0.6 0.35 0.07</pose>
+      <pose>0.04 0.36 0.01 0.6 0.35 0.07</pose>
     </model>
     <model name="potato_chip_2_v1">
       <link name="link_potato_chip_2_v1">
@@ -239,7 +239,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.02 -0.37 0.16 -0.0 0.0 -0.77</pose>
+      <pose>-0.02 -0.37 0.12 -0.0 0.0 -0.77</pose>
     </model>
     <model name="suger_1_v1">
       <link name="link_suger_1_v1">
@@ -287,7 +287,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.04 -0.42 0.09 0.04 0.03 1.15</pose>
+      <pose>0.04 -0.42 0.05 0.04 0.03 1.15</pose>
     </model>
     <model name="suger_2_v1">
       <link name="link_suger_2_v1">
@@ -335,7 +335,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.06 -0.35 0.1 0.02 0.02 0.06</pose>
+      <pose>0.06 -0.35 0.06 0.02 0.02 0.06</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>
