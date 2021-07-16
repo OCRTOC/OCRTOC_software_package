@@ -268,7 +268,7 @@ class ScoreCalculator():
                                 mesh_name, score, max_bound, actual_score))
                     else:
                         raise ValueError('Unknown metric')
-                    permu_err_list.append(score)
+                    permu_err_list.append(actual_score)
                 mean_permu_err = np.mean(np.array(permu_err_list, dtype = np.float32))
                 if mean_permu_err <= mesh_min_err:
                     mesh_min_err = mean_permu_err

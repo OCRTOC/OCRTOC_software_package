@@ -1,14 +1,17 @@
 #!/usr/bin/python
 from pybullet_env import SimEnv, SimRobot, Manipulator, Camera
-from pybullet_env import Box, Cylinder
+#from pybullet_env import Box, Cylinder
 import numpy as np
 import pybullet
 import os
+import yaml
 
 from gazebo_ros.gazebo_interface import GetModelStateResponse
 from rosgraph_msgs.msg import Clock
 import rospkg
 import rospy
+
+TABLE_HEIGHT = 0.778 # meter
 
 def get_model_id_name_map():
     num_bodies = pybullet.getNumBodies()
@@ -32,7 +35,7 @@ def handle_get_model_state(req):
         res.header.stamp = rospy.Time.now()
         res.pose.position.x = pose[0][0]
         res.pose.position.y = pose[0][1]
-        res.pose.position.z = pose[0][2] - 0.04
+        res.pose.position.z = pose[0][2] - TABLE_HEIGHT
         res.pose.orientation.x = pose[1][0]
         res.pose.orientation.y = pose[1][1]
         res.pose.orientation.z = pose[1][2]
@@ -54,7 +57,7 @@ if __name__ == '__main__':
     pkg_path = rospack.get_path('pybullet_simulator')
 
     sim_env = SimEnv(sim_rate=1000, GUI=True)
-    sim_env.resetGUIView(distance=0.8, yaw=90, pitch=-60, target_position=[0,0,0.0])
+    sim_env.resetGUIView(distance=0.8, yaw=90, pitch=-45, target_position=[0,0,0.8])
     sim_env.resetLightPosition(lightPosition=[1,0,1])
 
     # panda arm
@@ -62,17 +65,6 @@ if __name__ == '__main__':
     panda_config_path = os.path.join(pkg_path, 'robots/franka/config/panda_arm_hand.yaml')
     robot = Manipulator.loadFromURDF(urdf_path=panda_urdf_path, config_path=panda_config_path)
     print('robot id:{}, type:{}'.format(robot.id, type(robot.id)))
-    
-    # table, objects will be placed on top of it
-    table = Box.fromParam(basePosition=[0, 0, 0.02],
-                          baseRPY=[0, 0, 0],
-                          size=[0.6, 1.2, 0.04],
-                          useFixedBase=True)
-
-    # cylinder to place the robot
-    cylinder = Cylinder(basePosition=[-0.42, 0, 0.02], baseRPY=[0, 0, 0],
-                        radius=0.1, length=0.04, rgbaColor=[0.3, 0.3, 0.3, 1],
-                        useFixedBase=True)
 
     # load scene
     folder = os.path.join(rospack.get_path('ocrtoc_materials'), 'scenes')
@@ -81,21 +73,41 @@ if __name__ == '__main__':
     print('world_path: ', world_path)
     scene_object_ids = pybullet.loadSDF(world_path)
     print('scene_object_ids:', scene_object_ids)
+    # load model poses
+    yaml_path = folder + '/' + task_index + '.yaml'
+    print(yaml_path)
+    pose_dict = {}
+    with open(yaml_path, "r") as f:
+        object_list = yaml.load(f)
+        for key in sorted(object_list):
+            index = 1
+            for pose in object_list[key]:
+                alias = key + '_v' + str(index)
+                pose_dict[alias] = pose
+                index += 1
+    f.close()
+    print(pose_dict)
 
     robot.goHome(0.2)
 
     from gazebo_msgs.msg import ModelState
     from gazebo_ros.gazebo_interface import GetModelState
-    get_model_state_server = rospy.Service('/get_model_state', GetModelState, handle_get_model_state)
+    get_model_state_server = rospy.Service(
+        '/get_model_state', GetModelState, handle_get_model_state)
 
-    # read all model poses
+    # read all poses and reset model poses
     model_id_name_map = get_model_id_name_map()
     for model_id, model_name in model_id_name_map.items():
         model_pose = pybullet.getBasePositionAndOrientation(model_id)
         print(model_id, model_name, model_pose)
-
-    # reset model poses
-    # pybullet.resetBasePositionAndOrientation(model_id, position, quaternion)
+        if model_name in pose_dict:
+            print("reset pose of " + model_name)
+            pose = pose_dict[model_name]
+            position = [pose[0], pose[1], pose[2] + TABLE_HEIGHT]
+            quaternion = pybullet.getQuaternionFromEuler(
+                [pose[3], pose[4], pose[5]])
+            pybullet.resetBasePositionAndOrientation(
+                model_id, position, quaternion)
 
     while True:
         clock_msg = Clock()

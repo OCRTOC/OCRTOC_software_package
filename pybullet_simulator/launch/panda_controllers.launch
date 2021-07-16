@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<launch>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" respawn="false" output="screen">
+    <param name="publish_frequency" type="double" value="50.0"/>
+    <param name="tf_prefix" type="string" value=""/>
+  </node>
+
+  <rosparam command="load" file="$(find pybullet_simulator)/config/default_controllers.yaml" />
+  <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager"
+        args="spawn joint_state_controller" respawn="false" output="screen"/>
+
+  <node name="position_joint_trajectory_controller_spawner" pkg="controller_manager" type="controller_manager"
+        args="spawn position_joint_trajectory_controller" respawn="false" output="screen"/>
+</launch>

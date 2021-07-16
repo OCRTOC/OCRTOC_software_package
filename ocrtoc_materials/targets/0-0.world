@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.2 -0.15 0.14 0 0 0</pose>
+      <pose>0.2 -0.15 0.045 0 0 0</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>

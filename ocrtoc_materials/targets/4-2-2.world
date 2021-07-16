@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 -0.2 0.05 -0.0 -0.0 0.0</pose>
+      <pose>0.1 -0.2 0.01 -0.0 -0.0 0.0</pose>
     </model>
     <model name="clear_box_v1">
       <link name="link_clear_box_v1">
@@ -95,7 +95,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.01 0.38 0.09 -0.0 -0.0 1.57</pose>
+      <pose>0.01 0.38 0.05 -0.0 -0.0 1.57</pose>
     </model>
     <model name="grey_plate_v1">
       <link name="link_grey_plate_v1">
@@ -143,7 +143,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.2 0.05 0.01 -0.01 0.0</pose>
+      <pose>0.1 0.2 0.01 0.01 -0.01 0.0</pose>
     </model>
     <model name="plastic_lemon_v1">
       <link name="link_plastic_lemon_v1">
@@ -191,7 +191,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.16 -0.2 0.04 0.64 0.33 0.45</pose>
+      <pose>0.16 -0.2 -0.0 0.64 0.33 0.45</pose>
     </model>
     <model name="plastic_pear_v1">
       <link name="link_plastic_pear_v1">
@@ -239,7 +239,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.13 0.18 0.04 -0.02 0.8 -0.31</pose>
+      <pose>0.13 0.18 -0.0 -0.02 0.8 -0.31</pose>
     </model>
     <model name="plastic_plum_v1">
       <link name="link_plastic_plum_v1">
@@ -287,7 +287,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.06 -0.19 0.04 0.64 0.17 1.01</pose>
+      <pose>0.06 -0.19 0.0 0.64 0.17 1.01</pose>
     </model>
     <model name="plastic_strawberry_v1">
       <link name="link_plastic_strawberry_v1">
@@ -335,7 +335,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.07 0.21 0.05 0.61 0.36 1.15</pose>
+      <pose>0.07 0.21 0.01 0.61 0.36 1.15</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>

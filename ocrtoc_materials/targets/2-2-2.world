@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.1 0.35 0.05 0.01 -0.0 1.57</pose>
+      <pose>-0.1 0.35 0.01 0.01 -0.0 1.57</pose>
     </model>
     <model name="square_plate_2_v2">
       <link name="link_square_plate_2_v2">
@@ -95,7 +95,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.1 0.35 0.07 -0.0 -0.0 1.58</pose>
+      <pose>-0.1 0.35 0.03 -0.0 -0.0 1.58</pose>
     </model>
     <model name="square_plate_2_v3">
       <link name="link_square_plate_2_v3">
@@ -143,7 +143,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.1 0.35 0.09 -0.02 -0.01 1.59</pose>
+      <pose>-0.1 0.35 0.05 -0.02 -0.01 1.59</pose>
     </model>
     <model name="yellow_bowl_v1">
       <link name="link_yellow_bowl_v1">
@@ -191,7 +191,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.35 0.07 0.0 -0.01 1.57</pose>
+      <pose>0.1 0.35 0.03 0.0 -0.01 1.57</pose>
     </model>
     <model name="yellow_bowl_v2">
       <link name="link_yellow_bowl_v2">
@@ -239,7 +239,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.35 0.09 -0.05 -0.09 -1.56</pose>
+      <pose>0.1 0.35 0.05 -0.05 -0.09 -1.56</pose>
     </model>
     <model name="yellow_bowl_v3">
       <link name="link_yellow_bowl_v3">
@@ -287,7 +287,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.1 0.35 0.12 -0.03 -0.08 -1.57</pose>
+      <pose>0.1 0.35 0.08 -0.03 -0.08 -1.57</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>

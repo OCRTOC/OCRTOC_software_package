@@ -47,7 +47,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.0 0.45 0.04 1.57 -0.0 0.0</pose>
+      <pose>-0.0 0.45 0.0 1.57 -0.0 0.0</pose>
     </model>
     <model name="round_plate_1_v1">
       <link name="link_round_plate_1_v1">
@@ -95,7 +95,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.15 0.2 0.05 -0.0 -0.03 0</pose>
+      <pose>-0.15 0.2 0.01 -0.0 -0.03 0</pose>
     </model>
     <model name="round_plate_1_v2">
       <link name="link_round_plate_1_v2">
@@ -143,7 +143,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>-0.15 -0.2 0.05 -0.0 -0.03 0</pose>
+      <pose>-0.15 -0.2 0.01 -0.0 -0.03 0</pose>
     </model>
     <model name="round_plate_4_v1">
       <link name="link_round_plate_4_v1">
@@ -191,7 +191,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.15 -0.2 0.05 -0.0 -0.03 0</pose>
+      <pose>0.15 -0.2 0.01 -0.0 -0.03 0</pose>
     </model>
     <model name="round_plate_4_v2">
       <link name="link_round_plate_4_v2">
@@ -239,7 +239,7 @@
           </inertia>
         </inertial>
       </link>
-      <pose>0.15 0.2 0.05 -0.0 -0.03 0</pose>
+      <pose>0.15 0.2 0.01 -0.0 -0.03 0</pose>
     </model>
     <physics type="ode">
       <max_contacts>50</max_contacts>

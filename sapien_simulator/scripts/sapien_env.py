@@ -57,7 +57,7 @@ def main():
     # Load sdf
     table_height = 0.0
     sdf_objects, id2name, id2scale = load_sapien_sdf(world_path, scene, table_height)
-    sdf_goal = load_goal_sdf(world_path.replace("input", "target"), scene, table_height)
+    sdf_goal = load_goal_sdf(world_path.replace("scenes", "targets"), scene, table_height)
 
     # Render scene
     render_scene = scene.get_renderer_scene()
