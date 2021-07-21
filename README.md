@@ -326,7 +326,7 @@ If you find our work helpful, please cite the following paper: [https://arxiv.or
 ```bibtex
 @misc{liu2021ocrtoc,
 title={OCRTOC: A Cloud-Based Competition and Benchmark for Robotic Grasping and Manipulation},
-author={Ziyuan Liu and Wei Liu and Yuzhe Qin and Fanbo Xiang and Songyan Xin and Maximo A. Roa and Berk Calli and Hao Su and Yu Sun and Ping Tan},
+author={Ziyuan Liu and Wei Liu and Yuzhe Qin and Fanbo Xiang and Minghao Gou and Songyan Xin and Maximo A. Roa and Berk Calli and Hao Su and Yu Sun and Ping Tan},
 year={2021},
 eprint={2104.11446},
 archivePrefix={arXiv},
