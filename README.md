@@ -100,7 +100,7 @@ bash setup_env.sh
 - colmap 3.7
 - pycolmap 0.0.1
 - Sapien
-- torch==1.6.0, torchvision==0.7.0, open3d==0.12.0 for python3 and open3d==0.9.0 for python
+- torch==1.8.2, torchvision==0.7.0, open3d==0.12.0 for python3 and open3d==0.9.0 for python
 
 Now you have finished setting up the environment, and you can try to run the baseline solution.
 
