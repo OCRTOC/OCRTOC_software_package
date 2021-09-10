@@ -4,6 +4,7 @@ import pybullet, os
 import os.path as path
 import numpy as np
 from transforms3d.euler import quat2euler
+import time
 
 import actionlib
 import control_msgs.msg
@@ -90,7 +91,20 @@ if __name__ == '__main__':
     pkg_path = rospack.get_path('pybullet_simulator')
     # get robot
     panda_config_path = pkg_path + '/robots/franka/config/panda_arm_hand.yaml'
-    robot = Manipulator.loadFromID(id = ROBOT_ID, config_path=panda_config_path)
+
+    # Wait until robot is loaded in pybullet
+    robot_loaded_flag = False
+    while not robot_loaded_flag:
+        pybullet.disconnect()
+        pybullet.connect(pybullet.SHARED_MEMORY)
+        num_robot_joint = pybullet.getNumJoints(ROBOT_ID)
+        rospy.loginfo('number of joints of {}:{}'.format(ROBOT_ID, num_robot_joint))
+        if num_robot_joint == 0:
+            time.sleep(1)
+            continue
+        robot = Manipulator.loadFromID(id = ROBOT_ID, config_path=panda_config_path)
+        robot_loaded_flag = True
+    rospy.loginfo('Robot loaded')
 
     # get table
     table = Box.fromID(id = BOX_ID)

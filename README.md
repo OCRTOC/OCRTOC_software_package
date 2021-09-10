@@ -43,13 +43,13 @@ git submodule update --init --recursive
 ### Set up Docker
 - Option 1 (suggested): Pull the pre-built docker image from either of the following sources:
 ```bash
-docker pull registry.cn-hangzhou.aliyuncs.com/ocrtoc2021/release:2.0
+docker pull registry.cn-hangzhou.aliyuncs.com/ocrtoc2021/release:2.1
 ```
 
 or
 
 ```bash
-docker pull registry.us-west-1.aliyuncs.com/ocrtoc2021/release:2.0
+docker pull registry.us-west-1.aliyuncs.com/ocrtoc2021/release:2.1
 ```
 - Option 2: Build docker image from docker file.
 ```bash
@@ -94,13 +94,13 @@ bash setup_env.sh
 - Operating System: Ubuntu 18.04
 - ROS melodic-desktop-full
 - moveit 1.0.7
-- CUDA 10.2
+- CUDA 11.2
 - PyBullet 3.0
 - ceres-solver 2.0
 - colmap 3.7
 - pycolmap 0.0.1
 - Sapien
-- torch==1.6.0, torchvision==0.7.0, open3d==0.12.0 for python3 and open3d==0.9.0 for python
+- torch==1.8.2, torchvision==0.7.0, open3d==0.12.0 for python3 and open3d==0.9.0 for python
 
 Now you have finished setting up the environment, and you can try to run the baseline solution.
 

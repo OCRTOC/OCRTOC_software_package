@@ -1,4 +1,4 @@
-from nvidia/cudagl:10.2-devel-ubuntu18.04
+from nvidia/cudagl:11.2.1-devel-ubuntu18.04
 
 ENV TZ=Asia/Shanghai
 ENV NVIDIA_VISIBLE_DEVICES all
@@ -76,10 +76,23 @@ RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - 
     && apt-key adv --keyserver keys.gnupg.net \
         --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv \
         --keyserver hkp://keyserver.ubuntu.com:80 \
-        --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE \
-    && add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo bionic main" -u \
-    && apt-get -y install librealsense2-dkms librealsense2-utils \
-        librealsense2-dev librealsense2-dbg
+        --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+
+RUN git clone https://github.com/IntelRealSense/librealsense.git --recursive \
+    && cd librealsense \
+    && apt update \
+    && apt -y install git libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev \
+    libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev at\
+    && mkdir build \
+    && cd build \
+    && cmake .. -DCMAKE_BUILD_TYPE=release \
+    && make -j8 \
+    && make install
+
+# RUN add-apt-repository "deb https://librealsense.intel.com/Debian/apt-repo bionic main" -u \
+#     && apt update \
+#     && apt-get -y install librealsense2-dkms librealsense2-utils \
+#         librealsense2-dev librealsense2-dbg
 
 # Install Pybullet.
 RUN python3 -m pip install pybullet==3.0 pyquaternion -i https://mirrors.aliyun.com/pypi/simple \
@@ -95,7 +108,7 @@ RUN wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | apt-key 
     && apt-get update && apt-get install -y vulkan-sdk libglew-dev \
     && cd /root && git clone https://github.com/assimp/assimp \
     && cd assimp && git checkout v5.0.1 && mkdir build && cd build \
-    && cmake .. && make -j 4 && make install \
+    && cmake .. && make -j 8 && make install \
     && cd /root && rm -rf assimp \
     && git clone https://github.com/g-truc/glm \
     && cd glm && git checkout 0.9.9.8 && cp -r glm /usr/local/include \
@@ -104,9 +117,9 @@ RUN wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | apt-key 
     && git clone -b v1.8.5 https://github.com/gabime/spdlog \
     && git clone -b 3.3.3 https://github.com/glfw/glfw \
     && cd /workspace/sapien_pack/glfw \
-    && mkdir build && cd build && cmake .. && make install \
+    && mkdir build && cd build && cmake .. && make install -j8\
     && cd /workspace/sapien_pack/spdlog \
-    && mkdir build && cd build && cmake .. && make install
+    && mkdir build && cd build && cmake .. && make install -j8
 
 # For ocrtoc_common.
 RUN cd /workspace && mkdir -p geometry2_ws/src && cd geometry2_ws/src \
@@ -127,12 +140,14 @@ RUN cd /workspace && mkdir -p geometry2_ws/src && cd geometry2_ws/src \
 # For perception.
 RUN python3 -m pip install pip --upgrade \
     && python3 -m pip install scikit-build Cython \
-    && python3 -m pip install matplotlib graspnetAPI torch==1.6.0 \
-        torchvision==0.7.0 open3d==0.12.0.0 open3d-plus tensorboard==2.3 \
+    && python3 -m pip install matplotlib graspnetAPI \
+        open3d==0.12.0.0 open3d-plus tensorboard==2.3 \
         pyrealsense2 pyrender trimesh plyfile scikit-learn pytz \
     && python3 -m pip install imageio==2.5.0 pypng==0.0.19 PyOpenGL==3.1.0 \
         triangle==20190115.2 glumpy==1.1.0 \
-        Pillow==7.2.0 rtree -i https://mirrors.aliyun.com/pypi/simple
+        Pillow==7.2.0 rtree -i https://mirrors.aliyun.com/pypi/simple \
+    && python3 -m pip install torch==1.8.2+cu111 torchvision==0.9.2+cu111 \
+    -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
 
 # For perception.
 RUN apt -y install libboost-program-options-dev \
@@ -172,6 +187,6 @@ RUN cd /root \
     && mkdir -p ocrtoc_ws/src \
     && cd ocrtoc_ws \
     && source /opt/ros/melodic/setup.bash \
-    && catkin_make \
+    && catkin_make -j8\
     && echo "source /root/ocrtoc_ws/devel/setup.bash" >> ~/.bashrc \
     && rm -rf /var/lib/apt/lists/*
