@@ -1,4 +1,4 @@
-# Open Cloud Robot Table Organization Challenge (OCRTOC)
+# Open Cloud Robot Table Organization Challenge 2024 (OCRTOC) 
 
 ## Overview
 This is the OCRTOC software package. The homepage for OCRTOC is: [www.ocrtoc.org](http://www.ocrtoc.org). A brief video introduction about OCRTOC is available on [Youtube](https://www.youtube.com/watch?v=9dlWUbPF2Cc&t=1s) and [BiliBili](https://www.bilibili.com/video/BV1MV411W7aa/).
@@ -340,5 +340,8 @@ If you encounter technical issues regarding this software package, please contac
 
 ## OCRTOC Fan Group
 You can also join our fan group on [Slack](https://ocrtoc.slack.com/join/shared_invite/zt-se6z93pf-Wra_ZMG2Oi63i9LzUpjiEw#/shared-invite/email) to give us feedbacks and stay tuned.
+
+
+
 
 
