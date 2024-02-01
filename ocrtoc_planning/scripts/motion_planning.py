@@ -70,7 +70,7 @@ class MotionPlanner(object):
             self._group_name = config_parameters["group_name"]
 
         moveit_commander.roscpp_initialize(sys.argv)
-        self._move_group = moveit_commander.MoveGroupCommander(self._group_name)
+        self._move_group = moveit_commander.MoveGroupCommander(self._group_name, wait_for_servers = 30.0)
         self._move_group.allow_replanning(True)
         self._move_group.set_start_state_to_current_state()
         self._end_effector = self._move_group.get_end_effector_link()

@@ -73,6 +73,6 @@ def get_shift_one_problem(n_blocks=2, n_poses=9):
 def get_shift_all_problem(initial_block_poses, goal_block_poses, temp_poses=[]):
     print("enter my shift all problem")
     initial = DiscreteTAMPState(INITIAL_CONF, None, initial_block_poses)
-    available_poses = goal_block_poses.values() + temp_poses
+    available_poses = list(goal_block_poses.values()) + temp_poses
 
     return DiscreteTAMPProblem(initial, available_poses, goal_block_poses)

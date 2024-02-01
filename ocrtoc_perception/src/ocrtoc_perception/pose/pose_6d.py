@@ -93,8 +93,8 @@ def r_t_to_4x4mat(r, t):
     '''
     return np.vstack((np.hstack((r, t.reshape((3,1)))), np.array([0,0,0,1.0])))
 
-def load_model_pcd(model_name, models_dir):
-    model_path = os.path.join(models_dir, model_name, 'visual.ply')
+def load_model_pcd(model_name, models_dir, type = "visual.ply"):
+    model_path = os.path.join(models_dir, model_name, type)
     mesh = o3d.io.read_triangle_mesh(model_path)
     pcd = mesh.sample_points_uniformly(2000)
     return pcd

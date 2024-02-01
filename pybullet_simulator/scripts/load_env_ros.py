@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 from pybullet_env import SimEnv, SimRobot, Manipulator, Camera
 #from pybullet_env import Box, Cylinder
 import numpy as np
@@ -18,16 +18,16 @@ def get_model_id_name_map():
     id_name_map = {}
     for num_body in range(num_bodies):
         body_name = pybullet.getBodyInfo(num_body)[1]
-        id_name_map[num_body] = body_name
+        id_name_map[num_body] = body_name.decode('ascii')
     return id_name_map
 
 def handle_get_model_state(req):
     # print('get_model_state service requested:', req)
     model_name = req.model_name
     id_name_map = get_model_id_name_map()
-    # print('avaliable model names:', id_name_map.values())
+
     if model_name in id_name_map.values():
-        model_id = id_name_map.keys()[id_name_map.values().index(model_name)]
+        model_id = list(id_name_map.keys())[list(id_name_map.values()).index(model_name)]
         # for object_id in scene_object_ids:
         pose = pybullet.getBasePositionAndOrientation(model_id)
         # print('object_id:', int(req.model_name), pose)
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     print(yaml_path)
     pose_dict = {}
     with open(yaml_path, "r") as f:
-        object_list = yaml.load(f)
+        object_list = yaml.safe_load(f)
         for key in sorted(object_list):
             index = 1
             for pose in object_list[key]:
@@ -97,13 +97,15 @@ if __name__ == '__main__':
 
     # read all poses and reset model poses
     model_id_name_map = get_model_id_name_map()
+    print(f"model_id_name_map {model_id_name_map}")
     for model_id, model_name in model_id_name_map.items():
         model_pose = pybullet.getBasePositionAndOrientation(model_id)
         print(model_id, model_name, model_pose)
         if model_name in pose_dict:
-            print("reset pose of " + model_name)
             pose = pose_dict[model_name]
             position = [pose[0], pose[1], pose[2] + TABLE_HEIGHT]
+            print(f"Reset pose of {model_name} to [{position[0]},{position[1]},{position[2]}")
+
             quaternion = pybullet.getQuaternionFromEuler(
                 [pose[3], pose[4], pose[5]])
             pybullet.resetBasePositionAndOrientation(

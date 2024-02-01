@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="pybullet_simulator" type="ros_interface.py" name="ros_interface" respawn="false" output="screen" />
+</launch>

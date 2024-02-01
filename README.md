@@ -5,9 +5,9 @@ This is the OCRTOC software package. The homepage for OCRTOC is: [www.ocrtoc.org
 
 To take part in OCRTOC, you need to develop your own solution using this software package. After uploading your solution to the competition platform, the performance of your solution will be evaluated. 
 
-For the simulation branch, we support two simulators: PyBullet and Sapien. You can choose either of them to test your solution on your local machine. On the competition platform you can choose either of them for performance evaluation. 
+For the simulation stage, we support two simulators: PyBullet and Sapien. You can choose either of them to test your solution on your local machine. On the competition platform you can choose either of them for performance evaluation.
 
-For the real robot branch, your solution will be tested on real robot hardware. The software interfaces for sensor readings and robot control are the same for both simulation and the real robot hardware. So you will not encounter interface issues when transferring your solution from simulation to the real robot.
+For the real robot stage, your solution will be tested on real robot hardware. The software interfaces for sensor readings and robot control are the same for both simulation and the real robot hardware. So you will not encounter interface issues when transferring your solution from simulation to the real robot.
 
 The structure of the system is shown in the figure below.
 
@@ -22,7 +22,7 @@ In order for your solution to be executable both on your local machine and our c
 - Proper NVIDIA driver must be installed ([https://phoenixnap.com/kb/install-nvidia-drivers-ubuntu](https://phoenixnap.com/kb/install-nvidia-drivers-ubuntu))
 - Docker must be installed ([https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/))
 - NVIDIA container runtime must be installed ([https://www.celantur.com/blog/run-cuda-in-docker-on-linux/](https://www.celantur.com/blog/run-cuda-in-docker-on-linux/))
-- Ubuntu 18.04 and Ubuntu 20.04 are tested and recommended, other Linux distribution may also work.
+- Ubuntu 22.04 are tested and recommended, other Linux distribution may also work.
 
 ### Clone the Repository
 
@@ -41,7 +41,7 @@ git submodule update --init --recursive
 ```
 
 ### Set up Docker
-- Option 1 (suggested): Pull the pre-built docker image from either of the following sources:
+- Option 1 (links need to be updated): Pull the pre-built docker image from either of the following sources:
 ```bash
 docker pull registry.cn-hangzhou.aliyuncs.com/ocrtoc2021/release:2.1
 ```
@@ -61,7 +61,7 @@ bash build.sh your_registry:tag
 We provide two scripts for creating and executing the docker image. Please modify the **name** and **path** in the scripts according to your own needs.
 ```bash
 # Create docker container
-bash tools/create_container.sh
+bash tools/create_container.sh [Your docker image]
 
 # Enter the docker container
 bash tools/exec_container.sh
@@ -85,25 +85,27 @@ Since some parts of the environment are given as source code, they cannot be ins
 bash tools/exec_container.sh
 
 ## In the docker image
-cd /root/ocrtoc_ws/src/tools
+cd /root/ocrtoc_ws/tools
 bash setup_env.sh
 ```
 
 ### Content of the Docker Image
-
-- Operating System: Ubuntu 18.04
-- ROS melodic-desktop-full
-- moveit 1.0.7
-- CUDA 11.2
-- PyBullet 3.0
+- Operating System: Ubuntu 20.04
+- ROS noetic-desktop-full
+- moveit 1.1.13
+- CUDA 12.3
+- PyBullet 3.2.5
 - ceres-solver 2.0
 - colmap 3.7
-- pycolmap 0.0.1
-- Sapien
-- torch==1.8.2, torchvision==0.7.0, open3d==0.12.0 for python3 and open3d==0.9.0 for python
+- pycolmap 0.5.0
+- Sapien (pre-build version)
+- torch==1.8.2, torchvision==0.7.0, open3d==0.12.0 for python3
+- assimp v5.0.1
+- glm 0.9.9.8
+- glfw 3.3.3
+- spdlog v1.8.5
 
 Now you have finished setting up the environment, and you can try to run the baseline solution.
-
 
 ## Baseline Solution
 <span id="baseline_solution"></span>
@@ -114,7 +116,8 @@ First, open 3 terminals and execute the following commands in each of the termin
 ```bash
 # In the first terminal
 bash tools/exec_container.sh
-
+cd root/ocrtoc_ws/
+source devel/setup.bash
 # In the docker image
 # Start the PyBullet simulator and ros interface
 roslaunch ocrtoc_task bringup_simulator_pybullet.launch task_index:=0-0
@@ -126,6 +129,8 @@ roslaunch ocrtoc_task bringup_simulator_pybullet.launch task_index:=0-0
 ```bash
 # In the second terminal
 bash tools/exec_container.sh
+cd root/ocrtoc_ws/
+source devel/setup.bash
 
 # In the docker image
 # Start the solution server
@@ -135,6 +140,8 @@ roslaunch ocrtoc_task solution.launch
 ```bash
 # In the third terminal
 bash tools/exec_container.sh
+cd root/ocrtoc_ws/
+source devel/setup.bash
 
 # In the docker image
 # Start the trigger and start the task
@@ -199,7 +206,7 @@ roslaunch ocrtoc_task bringup_simulator_pybullet.launch task_index:=0-0
 bash tools/exec_container.sh
 
 # In the docker image
-roslaunch panda_moveit_config ocrtoc.launch
+roslaunch panda_moveit_config ocrtoc.launchAp
 ```
 
 ```bash
