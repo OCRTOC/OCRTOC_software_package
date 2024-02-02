@@ -112,18 +112,14 @@ RUN wget --no-check-certificate -qO - https://packages.lunarg.com/lunarg-signing
     && cmake .. && make -j 8 && make install \
     && cd /root && rm -rf assimp && unzip -d ./ glm.zip && rm glm.zip &&\
     && cd /glm &&  cp -r glm /usr/local/include \
-    && cd /root && rm -rf glm \
-    && mkdir -p /workspace/sapien_pack
+    && cd /root && rm -rf glm
 
-COPY /third_party/sapien_dep /root/workspace/sapien_pack
-RUN cd /root/workspace/sapien_pack  \
+COPY /third_party/sapien_dep /root/workspace/sapien_dep
+RUN cd /root/workspace/sapien_dep  \
     && unzip -d ./ glfw.zip && rm glfw.zip && cd /glfw \
     && mkdir build && cd build && cmake .. && make install -j8\
     && unzip -d ./ spdlog.zip && rm spdlog.zip && cd /spdlog \
     && mkdir build && cd build && cmake .. && make install -j8
-
-
-
 
 
 # For ocrtoc_common.
@@ -182,13 +178,11 @@ RUN cd /root && unzip -d ./ ceres-solver.zip && rm ceres-solver.zip \
     && python3 -m pip install pycolmap
 
 # Build Sapien.
-COPY /third_party/sapien_build.zip /root/workspace/sapien_pack
-RUN cd /root/workspace/sapien_pack &&  unzip -d ./ sapien_build.zip  && rm sapien_build.zip && cd sapien_build\
-    && cp nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json \
+COPY /third_party/sapien_pack /root/workspace/sapien_pack
+RUN cd /root/workspace/sapien_pack && cp nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json \
     && source /opt/ros/noetic/setup.bash \
     && cd sapien_ros && python3 setup.py bdist_wheel \
     && pip3 install dist/sapien_ros1-1.0.0rc2-cp38-cp38-linux_x86_64.whl
-
 
 # Others.
 # RUN cd /root \
