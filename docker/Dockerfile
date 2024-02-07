@@ -16,7 +16,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     # Install gl/x package for visualization inside docker
     && apt-get install -y libglvnd0 libgl1 libglx0 libegl1 libxext6 libx11-6 \
     # # Install gcc9
-    && add-apt-repository -y ppa:ubuntu-toolchain-r/test && apt-get update \
+    # && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    # && apt-get update \
     && apt install -y gcc-9 g++-9 \
     # Install cmake 3.16.3
     && cd /root && wget --no-check-certificate https://cmake.org/files/v3.16/cmake-3.16.3.tar.gz \
@@ -101,38 +102,35 @@ RUN python3 -m pip install pybullet==3.2.5 pyquaternion \
 
 
 # Install Sapien dependences.
-COPY /third_party/assimp/assimp.zip /root
-COPY /third_party/glm/glm.zip /root
+COPY docker/third_party/assimp/assimp.zip /root
+COPY docker/third_party/glm/glm.zip /root
 
 RUN wget --no-check-certificate -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | apt-key add - \
     && wget --no-check-certificate -qO /etc/apt/sources.list.d/lunarg-vulkan-1.2.170-bionic.list https://packages.lunarg.com/vulkan/1.2.170/lunarg-vulkan-1.2.170-bionic.list \
     && apt-get -o "Acquire::https::Verify-Peer=false" update \
     && apt-get -o "Acquire::https::Verify-Peer=false" install -y vulkan-sdk libglew-dev \
-    && cd /root  && unzip -d ./ assimp.zip && rm assimp.zip && cd assimp &&  mkdir build && cd build \
+    && cd /root  && unzip -d ./ assimp.zip && rm assimp.zip && cd assimp-5.0.1 &&  mkdir build && cd build \
     && cmake .. && make -j 8 && make install \
-    && cd /root && rm -rf assimp && unzip -d ./ glm.zip && rm glm.zip &&\
-    && cd /glm &&  cp -r glm /usr/local/include \
-    && cd /root && rm -rf glm \
-    && mkdir -p /workspace/sapien_pack
+    && cd /root && rm -rf assimp-5.0.1 && unzip -d ./ glm.zip && rm glm.zip \
+    && cd glm-0.9.9.8 &&  cp -r glm /usr/local/include \
+    && cd /root && rm -rf glm-0.9.9.8
 
-COPY /third_party/sapien_dep /root/workspace/sapien_pack
-RUN cd /root/workspace/sapien_pack  \
-    && unzip -d ./ glfw.zip && rm glfw.zip && cd /glfw \
-    && mkdir build && cd build && cmake .. && make install -j8\
-    && unzip -d ./ spdlog.zip && rm spdlog.zip && cd /spdlog \
-    && mkdir build && cd build && cmake .. && make install -j8
+COPY docker/third_party/sapien_dep/spdlog.zip /root
+COPY docker/third_party/sapien_dep/glfw.zip /root
 
-
-
-
+RUN cd /root \
+    && unzip -d ./  glfw.zip && rm glfw.zip && cd glfw-3.3.3 \
+    && mkdir build && cd build && cmake .. && make install -j8 \
+    && cd /root \    
+    && unzip -d ./ spdlog.zip && rm spdlog.zip && cd spdlog-1.8.5 \
+    && mkdir build && cd build && cmake .. && make install -j8 \
+    && cd /root && rm -rf spdlog-1.8.5 && rm -rf glfw-3.3.3
 
 # For ocrtoc_common.
-RUN cd /root/workspace  && mkdir -p geometry2_ws
-COPY /third_party/perception_dep/geometry2.zip /root/workspace/geometry2_ws
-
-    #git clone -b noetic-devel https://github.com/ros/geometry2.git \
+RUN cd /root && mkdir -p workspace && cd workspace  && mkdir -p geometry2_ws
+COPY docker/third_party/perception_dep/geometry2.zip /root/workspace/geometry2_ws
 RUN cd /root/workspace/geometry2_ws  && unzip -d ./ geometry2.zip && rm geometry2.zip \
-    && mv geometry2 src \
+    && mv geometry2-noetic-devel src \
     && source /opt/ros/noetic/setup.bash \
     && pip install transforms3d \
     && pip3 install empy pyyaml virtualenv \
@@ -156,9 +154,9 @@ RUN python3 -m pip install pip --upgrade \
     && python3 -m pip install imageio==2.5.0 pypng==0.0.20 \
          PyOpenGL==3.1.0 \
          triangle==20190115.2 glumpy==1.1.0 \
-         Pillow==7.2.0 rtree \
-    && python3 -m pip --default-timeout=1000000000 install torch==1.8.2+cu111 torchvision==0.9.2+cu111 \
-     -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
+         Pillow==7.2.0 rtree 
+    # && python3 -m pip --default-timeout=1000000000 install torch==1.8.2+cu111 torchvision==0.9.2+cu111 \
+    #  -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
 
     # For perception.
 RUN apt -y install libboost-program-options-dev \
@@ -166,29 +164,29 @@ RUN apt -y install libboost-program-options-dev \
     libboost-test-dev libeigen3-dev libsuitesparse-dev libfreeimage-dev \
     libgoogle-glog-dev libgflags-dev qtbase5-dev libqt5opengl5-dev \
     libcgal-dev libcgal-qt5-dev libatlas-base-dev libsuitesparse-dev
-COPY /third_party/perception_dep /root
-RUN cd /root && unzip -d ./ ceres-solver.zip && rm ceres-solver.zip \
-    && cd ceres-solver \
+
+COPY docker/third_party/perception_dep/ceres-solver.tar.gz /root
+COPY docker/third_party/perception_dep/colmap.tar.gz /root
+
+RUN cd /root && tar -xf ceres-solver.tar.gz -C ./ && rm ceres-solver.tar.gz \
+    && cd ceres-solver-2.0.0 \
     && mkdir build && cd build \
     && cmake .. -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
     && make -j8 && make install \
-    && cd ../.. && rm -rf ceres-solver \
-    && unzip -d ./ colmap.zip && rm colmap.zip \
-    && cd colmap \
+    && cd ../.. && rm -rf ceres-solver-2.0.0 \
+    && tar -xf colmap.tar.gz -C ./  && rm colmap.tar.gz \
+    && cd colmap-3.7 \
     && mkdir build && cd build \
     && cmake .. -DCMAKE_C_COMPILER=/usr/bin/gcc-9 && make -j8 && make install \
-    && cd ../.. && rm -rf colmap \
-    && rm geometry2.zip \
+    && cd ../.. && rm -rf colmap-3.7 \
     && python3 -m pip install pycolmap
 
 # Build Sapien.
-COPY /third_party/sapien_build.zip /root/workspace/sapien_pack
-RUN cd /root/workspace/sapien_pack &&  unzip -d ./ sapien_build.zip  && rm sapien_build.zip && cd sapien_build\
-    && cp nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json \
+COPY docker/third_party/sapien_pack /root/workspace/sapien_pack
+RUN cd /root/workspace/sapien_pack && cp nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json \
     && source /opt/ros/noetic/setup.bash \
     && cd sapien_ros && python3 setup.py bdist_wheel \
     && pip3 install dist/sapien_ros1-1.0.0rc2-cp38-cp38-linux_x86_64.whl
-
 
 # Others.
 # RUN cd /root \
