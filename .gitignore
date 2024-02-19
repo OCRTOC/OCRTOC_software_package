@@ -5,4 +5,4 @@
 /scan/
 # SAPIEN cache file
 *.convex.stl
-
+third_party/

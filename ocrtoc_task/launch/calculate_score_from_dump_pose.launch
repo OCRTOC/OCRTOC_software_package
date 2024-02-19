@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="task_index" default="0-0" doc="Task index."/>
+  <arg name="IoU_threshold" default="0.2" doc="Succeed threshold"/>
 
-  <node pkg="ocrtoc_task" type="calculate_score_from_dump_pose.py" name="calculate_score_from_dump_pose" output="screen">
+  <node pkg="ocrtoc_task" type="calculate_score_from_dump_pose_new.py" name="calculate_score_from_dump_pose" output="screen">
     <param name="task_index" value="$(arg task_index)"/>
+    <param name="IoU_threshold" value="$(arg IoU_threshold)"/>
+
   </node>
 </launch>

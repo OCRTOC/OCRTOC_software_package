@@ -15,7 +15,7 @@ class ManipulatorInterface(object):
         moveit_commander.roscpp_initialize(sys.argv)
         self.robot = moveit_commander.RobotCommander()
         self.scene = moveit_commander.PlanningSceneInterface()
-        self.move_group = moveit_commander.MoveGroupCommander(group_name)
+        self.move_group = moveit_commander.MoveGroupCommander(group_name, wait_for_servers = 30.0)
 
         rospy.Service("get_manipulator_info", ManipulatorInfo,
                       self.get_manipulator_info_handler)

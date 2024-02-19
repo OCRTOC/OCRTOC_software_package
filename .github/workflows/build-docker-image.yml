@@ -1,0 +1,38 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Remove unnecessary files
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Download third party
+      run: sh docker/download_thirdparty.sh 
+    - name: Build the Docker image
+      run: |
+        BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+        DOCKER_TAG= echo "$BRANCH" | sed 's#/#_#g'
+        docker build -f docker/Dockerfile -t ocrtoc/ocrtoc2024:latest .
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Push Dockerhub
+      run: |             
+        docker push ocrtoc/ocrtoc2024:latest
+      
+    

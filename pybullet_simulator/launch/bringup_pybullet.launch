@@ -5,6 +5,10 @@
     <param name="task_index" value="$(arg task_index)"/>
   </node>
 
-  <node pkg="pybullet_simulator" type="ros_interface.py" name="ros_interface" respawn="false" output="screen" />
+  <node pkg="ocrtoc_task" type="timed_roslaunch.sh"
+    args="2 pybullet_simulator ros_interface.launch"
+    name="ros_interface" respawn="false" output="screen" >
+  </node>
+
   <include file="$(find pybullet_simulator)/launch/panda_upload.launch"/>
 </launch>

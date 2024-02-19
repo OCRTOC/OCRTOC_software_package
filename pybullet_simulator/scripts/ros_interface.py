@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # license removed for brevity
 import pybullet, os
 import os.path as path
@@ -88,6 +88,7 @@ if __name__ == '__main__':
         print("connected to pybullet physics id:", physics_id)
 
     rospack = rospkg.RosPack()
+
     pkg_path = rospack.get_path('pybullet_simulator')
     # get robot
     panda_config_path = pkg_path + '/robots/franka/config/panda_arm_hand.yaml'
@@ -98,6 +99,7 @@ if __name__ == '__main__':
         pybullet.disconnect()
         pybullet.connect(pybullet.SHARED_MEMORY)
         num_robot_joint = pybullet.getNumJoints(ROBOT_ID)
+
         rospy.loginfo('number of joints of {}:{}'.format(ROBOT_ID, num_robot_joint))
         if num_robot_joint == 0:
             time.sleep(1)
@@ -115,9 +117,10 @@ if __name__ == '__main__':
     kinect = Camera(name='kinect')
     num_robot_joint = pybullet.getNumJoints(ROBOT_ID)
     kinect_id = None
+
     for link_id in range(num_robot_joint):
         joint_info = pybullet.getJointInfo(ROBOT_ID, link_id)
-        if joint_info[1] == 'kinect_camera_joint':
+        if joint_info[1].decode() == 'kinect_camera_joint':
             kinect_id = link_id
             break
     if kinect_id is None:
@@ -156,7 +159,6 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         # tf
         robot.broadcast_tfs()
-
         # joint state
         joint_info = robot.getArmJointStateMsg()
         joint_state_publisher.publish(joint_info)

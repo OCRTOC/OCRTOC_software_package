@@ -12,7 +12,7 @@ import tf
 
 from grasp_detection import Grasp_Detector
 from get_6dpose_dump_simulator import PoseDumper
-from calculate_score_from_dump_pose import ScoreCalculator
+from calculate_score_from_dump_pose_new import ScoreCalculator
 
 from geometry_msgs.msg import Pose, PoseArray
 import ocrtoc_msg.msg
@@ -118,5 +118,7 @@ if __name__ == '__main__':
         pd.dump()
 
         # 6. Calculate Score
-        score_calculator = ScoreCalculator(task_index = task_index)
+        IoU_threshold = rospy.get_param('~IoU_threshold')
+
+        score_calculator = ScoreCalculator(task_index = task_index, IoU = IoU_threshold, time_cost = time_cost)
         score_calculator.calculate_score()
