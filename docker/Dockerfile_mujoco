@@ -1,0 +1,32 @@
+from nvidia/cudagl:11.4.2-devel-ubuntu20.04
+
+ENV TZ=Asia/Shanghai
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+
+
+# Install Ubuntu tools.
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+    && rm /etc/apt/sources.list.d/cuda.list \
+    && apt-get update \
+    && apt-get install -y build-essential git libssl-dev \
+        lsb-release iputils-ping manpages-dev net-tools \
+        python3-pip python3-tk \
+        psmisc software-properties-common tree vim wget zip \
+    # Install gl/x package for visualization inside docker
+    && apt-get install -y libglvnd0 libgl1 libglx0 libegl1 libxext6 libx11-6 \
+    # # Install gcc9
+    # && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    # && apt-get update \
+    && apt install -y gcc-9 g++-9 \
+    # Install cmake 3.16.3
+    && cd /root && wget --no-check-certificate https://cmake.org/files/v3.16/cmake-3.16.3.tar.gz \
+    && tar -xf cmake-3.16.3.tar.gz && cd cmake-3.16.3 \
+    && ./bootstrap && make -j4 && make install \
+    && cd /root && rm -rf cmake-3.16.3 cmake-3.16.3.tar.gz
+
+# Install mujoco, gym and their dependency
+RUN pip3 install numpy transforms3d mujoco==2.3.3 scipy gymnasium==0.29.1 pyyaml joblib matplotlib jinja2 pettingzoo trimesh imageio
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
