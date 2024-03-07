@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <node name="camera_info_pub" pkg="sapien_simulator" type="camera_info_pub.py" output="screen">
-  </node>
-</launch>
