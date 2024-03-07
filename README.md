@@ -7,14 +7,17 @@ This is the OCRTOC software package. The homepage for OCRTOC is: [www.ocrtoc.org
 
 To take part in OCRTOC, you need to develop your own solution using this software package. After uploading your solution to the competition platform, the performance of your solution will be evaluated. 
 
-For the simulation stage, we support two simulators: PyBullet and Sapien. You can choose either of them to test your solution on your local machine. On the competition platform you can choose either of them for performance evaluation.
+For the simulation stage, we support two simulators: PyBullet with ROS and Mujoco with Gymnasium. You can choose either of them to test your solution on your local machine. On the competition platform you can choose either of them for performance evaluation.
 
 For the real robot stage, your solution will be tested on real robot hardware. The software interfaces for sensor readings and robot control are the same for both simulation and the real robot hardware. So you will not encounter interface issues when transferring your solution from simulation to the real robot.
 
-The structure of the system is shown in the figure below.
+The structure of the Pybullet-ROS system is shown in the figure below.
 
 ![](docs/data_flow.png)
 
+The structure of the Mujoco-Gymnasium system is shown in the figure below.
+
+![](docs/mujoco_structure.png)
 
 ## Set up Environment
 In order for your solution to be executable both on your local machine and our competition platform, we provide you a docker image with some pre-installed software. You need to develop and test your solution within this docker image. To set up the environment, you can use the pre-built docker image. The following instructions provide more details.
@@ -43,12 +46,18 @@ git submodule update --init --recursive
 ```
 
 ### Set up Docker
+#### Pybullet
 - Pull the pre-built docker image from the following source:
 ```bash
 docker pull ocrtoc/ocrtoc2024:latest
 ```
-
+#### Mujoco
+- Pull the pre-built docker image from the following source:
+```bash
+docker pull ocrtoc/ocrtoc2024_mujoco:latest
+```
 ### Content of the Docker Image
+#### Docker image for Pybullet user
 - Operating System: Ubuntu 20.04
 - ROS noetic-desktop-full
 - moveit 1.1.13
@@ -57,12 +66,13 @@ docker pull ocrtoc/ocrtoc2024:latest
 - ceres-solver 2.0
 - colmap 3.7
 - pycolmap 0.5.0
-- Sapien (pre-build version)
 - open3d==0.12.0 for python3
-- assimp v5.0.1
-- glm 0.9.9.8
-- glfw 3.3.3
-- spdlog v1.8.5
+
+#### Docker image for Mujoco user
+- Operating System: Ubuntu 20.04
+- CUDA 12.3
+- mujoco 2.3.3
+- gymnasium 0.29.1
 
 ### Start Docker
 We provide two scripts for creating and executing the docker image. Please modify the **name** and **path** in the scripts according to your own needs.
@@ -85,6 +95,7 @@ bash tools/exec_container.sh
 ```
 
 ### Set up Environment inside the Docker Container
+#### Pybullet user
 Since some parts of the environment are given as source code, they cannot be installed while building the docker image. You need to run the following commands to set up the environment. Besides, Pytorch will be installed for baseline and evaluation. The version of PyTorch installed here is
 
 - torch==1.8.2, torchvision==0.7.0
@@ -100,11 +111,25 @@ cd /root/ocrtoc_ws/tools
 bash setup_env.sh
 ```
 
+#### Mujoco user
+You need to run the following commands to download required materials for Mujoco.
+
+However, you don't need to run them when you restart the docker container. 
+
+```bash
+# Enter the docker container
+bash tools/exec_container.sh
+
+## In the docker image
+cd /root/ocrtoc_ws
+bash tools/setup_env_mujoco.sh
+```
 
 Now you have finished setting up the environment, and you can try to run the baseline solution.
 
 ## Baseline Solution
 <span id="baseline_solution"></span>
+### Pybullet
 To ease your development process, we provide a baseline solution, based on which you can build your own solution. In the following we show an example on how to run our baseline solution in the PyBullet simulator on your local machine.
 
 First, open 3 terminals and execute the following commands in each of the terminal.
@@ -144,17 +169,27 @@ source devel/setup.bash
 roslaunch ocrtoc_task trigger.launch task_index:=0-0
 ```
 
-## Build Your Own Solution
+### Mujoco
+We provide a solution using keyboard to control the robot. In the following we show how to run it in the Mujoco simulator on your local machine.
+```bash
+# Enter the docker container
+bash tools/exec_container.sh
 
+## In the docker image
+cd /root/ocrtoc_ws/ocrtoc_gym
+python3 run.py
+```
+## Build Your Own Solution
+### Pybullet
 For performance evaluation on the OCRTOC platform we run the above three launch files as well. For the real robot branch, we bring up the real robot hardware instead of simulation. As long as your solution works fine with the simulation, it will also be executable on the real hardware.
 
-### Baseline Solution 
+#### Baseline Solution 
 To start with, we provide a baseline solution that mainly contains two parts `ocrtoc_perception` and `ocrtoc_planning`. To develop your own solution, you can easily modify the content of the baseline solution. Alternatively, you can also develop your own solution from scratch. No matter how you build your solution, you need to guarantee that your solution can be called by the `solution.launch` script in `ocrtoc_task`, because this is how your solution will be launched during evaluation.
 Since some packages are not used in simulation phase, we created symbolic links in `OCRTOC_software_package/src`. If you created new folders during development, you need to add symbolic links for packages you created and build the workspace under `OCRTOC_software_package` folder.
 
-### Interfaces
+#### Interfaces
 
-#### ROS Topics 
+##### ROS Topics 
 You can read from or write to ROS topics to interact with the robot (for both real robot and simulation). To develop your own solution, you can use the following topics. These topics share the same names in both simulation and real robot hardware. With this consistency, a solution that is developed in simulation can be evaluated on the real robot hardware as well.
 - /tf
     - world
@@ -179,7 +214,7 @@ You can read from or write to ROS topics to interact with the robot (for both re
 Apart from the above topics, there exist also other topics, however, their consistency in simulation and real robot is not guaranteed. 
 
 
-#### Python Interfaces
+##### Python Interfaces
 For those who are not familiar with ROS, we also provide python interfaces for the following functions.
 - Read camera images
 - Get transformation (TF) information
@@ -222,15 +257,25 @@ python test_transform_interface.py # also executable with pyhon3
 python test_gripper_interface.py # also executable with pyhon3
 ```
 
-### Object 6D Poses in Simulation
+#### Object 6D Poses in Simulation
 For debugging purposes, you can read the object 6D poses in simulation via `/get_model_state` interface. An example is given in [`ocrtoc_task/scripts/get_6dpose_dump_simulator.py`](ocrtoc_task/scripts/get_6dpose_dump_simulator.py).
 
 However, you should **NEVER READ THE OBJECT 6D POSES DIRECTLY FROM SIMULATION IN YOUR SOLUTION**. Violation of the rule will result in invalid scores. 
 
+### Mujoco
+The OCRTOC for Mujoco user is built upon Gymnasium. The general framework of challenge consists of two compoents, i.e. Agent and Env. You should build an agent `MyAgent` to interacts with ocrtoc environment. We provide a base class AgentBase with some variable. You can inherit the base class to your class MyAgent and implement your onw method in the `ocrtoc_gym/ocrtoc_agent/agent_builder.py` file. You can change parameters in `agent_config.yml` and run this script for testing process. 
+```bash
+# In the terminal
+bash tools/exec_container.sh
+cd /root/ocrtoc_ws/ocrtoc_gym
+python3 run.py
+```
+
+
 ## Evaluation
 
 The evaluation module is provided so that you can evaluate your own solution in simulation.
-
+### Pybullet
 The steps are similar to running [baseline solution](#baseline_solution). The only difference is that you should launch `trigger_and_evaluation.launch` instead of `trigger.launch`.
 
 ```bash
@@ -246,6 +291,11 @@ roslaunch ocrtoc_task trigger_and_evaluation.launch task_index:=0-0
 ```
 
 The task score will be printed in the terminal and also saved to `ocrtoc_task/evaluation/0-0_score.txt`.
+
+### Mujoco 
+Each time you run `ocrtoc_gym/run.py` script, your agent will be automatically evaluated. The score will be written into `ocrtoc_gym/ocrtov_env/result` folder. Besides, you can check details for specific tasks in `ocrtoc_gym/ocrtov_env/evaluation` folder. 
+
+In the qualifying phase, we will overwrite `ocrtoc_gym/ocrtov_env` folder. Please **only write your code into `ocrtoc_gym/ocrtoc_agent` folder**. And we will overwrite existing parameters in  `agent_config.yml`. Please add your parameters below these existing parameters.
 
 ## Submission
 
@@ -321,7 +371,7 @@ info:
 evalution:
     # Participate in the 'Simulation' or 'Real Robot' branch? [sim | real | both]
     branch: "sim"
-    # The simulator you want to use in the 'Simulation branch' [Pybullet-ROS | Sapien-ROS]
+    # The simulator you want to use in the 'Simulation branch' [Pybullet-ROS | Mujoco-Gym]
     simulator: "Pybullet-ROS"    # Not available for 'Real Robot branch'
     # Which part of the baseline solution was modified to create this solution? The evalution result will be shown in different tracks.
     # modified_perception == True, modified_planning == True, Main track only

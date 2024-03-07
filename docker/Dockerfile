@@ -102,29 +102,29 @@ RUN python3 -m pip install pybullet==3.2.5 pyquaternion \
 
 
 # Install Sapien dependences.
-COPY docker/third_party/assimp/assimp.zip /root
-COPY docker/third_party/glm/glm.zip /root
+# COPY docker/third_party/assimp/assimp.zip /root
+# COPY docker/third_party/glm/glm.zip /root
 
-RUN wget --no-check-certificate -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | apt-key add - \
-    && wget --no-check-certificate -qO /etc/apt/sources.list.d/lunarg-vulkan-1.2.170-bionic.list https://packages.lunarg.com/vulkan/1.2.170/lunarg-vulkan-1.2.170-bionic.list \
-    && apt-get -o "Acquire::https::Verify-Peer=false" update \
-    && apt-get -o "Acquire::https::Verify-Peer=false" install -y vulkan-sdk libglew-dev \
-    && cd /root  && unzip -d ./ assimp.zip && rm assimp.zip && cd assimp-5.0.1 &&  mkdir build && cd build \
-    && cmake .. && make -j 8 && make install \
-    && cd /root && rm -rf assimp-5.0.1 && unzip -d ./ glm.zip && rm glm.zip \
-    && cd glm-0.9.9.8 &&  cp -r glm /usr/local/include \
-    && cd /root && rm -rf glm-0.9.9.8
+# RUN wget --no-check-certificate -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | apt-key add - \
+#     && wget --no-check-certificate -qO /etc/apt/sources.list.d/lunarg-vulkan-1.2.170-bionic.list https://packages.lunarg.com/vulkan/1.2.170/lunarg-vulkan-1.2.170-bionic.list \
+#     && apt-get -o "Acquire::https::Verify-Peer=false" update \
+#     && apt-get -o "Acquire::https::Verify-Peer=false" install -y vulkan-sdk libglew-dev \
+#     && cd /root  && unzip -d ./ assimp.zip && rm assimp.zip && cd assimp-5.0.1 &&  mkdir build && cd build \
+#     && cmake .. && make -j 8 && make install \
+#     && cd /root && rm -rf assimp-5.0.1 && unzip -d ./ glm.zip && rm glm.zip \
+#     && cd glm-0.9.9.8 &&  cp -r glm /usr/local/include \
+#     && cd /root && rm -rf glm-0.9.9.8
 
-COPY docker/third_party/sapien_dep/spdlog.zip /root
-COPY docker/third_party/sapien_dep/glfw.zip /root
+# COPY docker/third_party/sapien_dep/spdlog.zip /root
+# COPY docker/third_party/sapien_dep/glfw.zip /root
 
-RUN cd /root \
-    && unzip -d ./  glfw.zip && rm glfw.zip && cd glfw-3.3.3 \
-    && mkdir build && cd build && cmake .. && make install -j8 \
-    && cd /root \    
-    && unzip -d ./ spdlog.zip && rm spdlog.zip && cd spdlog-1.8.5 \
-    && mkdir build && cd build && cmake .. && make install -j8 \
-    && cd /root && rm -rf spdlog-1.8.5 && rm -rf glfw-3.3.3
+# RUN cd /root \
+#     && unzip -d ./  glfw.zip && rm glfw.zip && cd glfw-3.3.3 \
+#     && mkdir build && cd build && cmake .. && make install -j8 \
+#     && cd /root \    
+#     && unzip -d ./ spdlog.zip && rm spdlog.zip && cd spdlog-1.8.5 \
+#     && mkdir build && cd build && cmake .. && make install -j8 \
+#     && cd /root && rm -rf spdlog-1.8.5 && rm -rf glfw-3.3.3
 
 # For ocrtoc_common.
 RUN cd /root && mkdir -p workspace && cd workspace  && mkdir -p geometry2_ws
@@ -182,11 +182,11 @@ RUN cd /root && tar -xf ceres-solver.tar.gz -C ./ && rm ceres-solver.tar.gz \
     && python3 -m pip install pycolmap
 
 # Build Sapien.
-COPY docker/third_party/sapien_pack /root/workspace/sapien_pack
-RUN cd /root/workspace/sapien_pack && cp nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json \
-    && source /opt/ros/noetic/setup.bash \
-    && cd sapien_ros && python3 setup.py bdist_wheel \
-    && pip3 install dist/sapien_ros1-1.0.0rc2-cp38-cp38-linux_x86_64.whl
+# COPY docker/third_party/sapien_pack /root/workspace/sapien_pack
+# RUN cd /root/workspace/sapien_pack && cp nvidia_icd.json /usr/share/vulkan/icd.d/nvidia_icd.json \
+#     && source /opt/ros/noetic/setup.bash \
+#     && cd sapien_ros && python3 setup.py bdist_wheel \
+#     && pip3 install dist/sapien_ros1-1.0.0rc2-cp38-cp38-linux_x86_64.whl
 
 # Others.
 # RUN cd /root \

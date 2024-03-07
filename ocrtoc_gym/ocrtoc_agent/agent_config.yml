@@ -1,0 +1,49 @@
+# This is the default config file which is loaded by run.py. It contains all the parameters that can be specified for
+# the evaluation of an Agent. The parameters are explained in more detail in ocrtoc_gym/ocrtoc_env/src/evaluate_agent.py
+
+# task env:
+# "0_0"
+# "1_1_1","1_1_2","1_1_3",
+# "1_2_1","1_2_2",
+# "1_3_1",
+# "1_4_1","1_4_2",
+# "1_5_1","1_5_2","1_5_3",
+# "2_1_1","2_1_2",
+# "2_2_1","2_2_2","2_2_3","2_2_4",
+# "3_1_1","3_1_2", 
+# "3_2_1","3_2_2",
+# "3_3_1","3_3_2",
+# "4_1_1","4_1_2",
+# "4_2_1","4_2_2","4_2_3","4_2_4",
+# "4_3_1","4_3_2","4_3_3","4_3_4",
+# "5_2_1","5_2_2",
+# "6_1_1","6_1_2",
+# "6_2_1","6_2_2","6_2_3",
+# "6_3_1","6_3_2","6_3_3"
+# you can use the shortcuts e.g. "1-1" to evaluate "1_1_1", "1_1_2" ,and "1_1_3"
+
+
+# Execution Parameters
+render: True
+n_episodes: 2 # How many episodes one environment will run
+n_cores: 1 # How many cores will be used, -1 takes all cores and 1 will not parallelize the program
+env: ["0_0"] # What environments are evaluated can specify multiple environments
+debug: False # If render is true and debug is true, there will be transparent target objects on GUI. In Evaluation process , current and target bounding boxes will be drawn
+# Evaluation paramter
+IoU_threshold: 0.6 # Threshold of Intersection over Union for current and target bounding boxes, the IoU above this value is seen as success
+
+
+# Transformation
+world_to_panda: [-0.42,0.0 ,0.0, 0 ,0 ,0]   # panda link0 w.r.t to world
+realsense1_to_panda_hand: [0.051, -0.019, 0.059, 0, 0, -1.57] # realsense w.r.t panda hand
+realsense1_to_panda: [1.016,0.006, 0.8,-3.142,-0.699, 1.571] #realsense2 w.r.t panda link0 
+# Realsense:
+realsense_to_realsense_link: [0.0149, 0.0175, 0.0125, 0, 0 ,0] # realsense link w.r.t to realsense 
+realsense_link_to_rgb: [0.015, 0.0, 0.0 ,0 ,3.14, 0] # rgb optical frame to realsense link
+realsense_link_to_depth: [0.0, 0.0, 0.0 ,0 , 0, 0] # depth optical frame to realsense link
+realsense_fovy: 45 
+realsense_width: 1280
+realsense_height: 720
+
+# Agent Parameters
+# You can specify your own parameters here, they will be passed to the init of your Agent

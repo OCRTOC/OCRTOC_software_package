@@ -187,10 +187,10 @@ class ScoreCalculator():
         log_file.write('{}\n'.format('-' * 60 + '\n' + '-' * 60))
         for mesh_name, score in zip(mesh_name_list, score_list):
             log_file.write('{}: {}\n'.format(mesh_name, score))
-        log_file.write('{}\nScene Index:{}, \nScene mean score:{}'.format(
-            '-' * 60 + '\n' + '-' * 60, self.task_index,   scene_score_time))
-        rospy.loginfo('\033[032m\nScene mean score:{}\033[0m'.format(scene_score_time))
-        return scene_score_time
+        log_file.write('{}\nScene Index:{}, \nScene mean score:{}, \nMean Rearrangement per hour:{}'.format(
+            '-' * 60 + '\n' + '-' * 60, self.task_index, scene_score, scene_score_time))
+        rospy.loginfo('\033[032m\nScene mean score:{}\033[0m'.format(scene_score))
+        return scene_score
 
 
 if __name__ == '__main__':
