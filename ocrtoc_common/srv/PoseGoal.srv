@@ -1,4 +1,0 @@
-geometry_msgs/Pose goal
----
-bool successed
-string text
