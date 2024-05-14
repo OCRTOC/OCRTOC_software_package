@@ -1,6 +1,5 @@
 import datetime
 import os
-
 import numpy as np
 from joblib import Parallel, delayed
 import gymnasium as gym
@@ -68,8 +67,8 @@ def _evaluate(env,  init_states, render, IoU_threshold, debug,**kwargs):
     else:
         gym_env = gym.make("OCRTOC_"+ env +"-v0",render_mode="rgb_array")
     target_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname((os.path.abspath(__file__)))))),"ocrtoc_materials_mujoco","targets",env.replace("_","-") + ".yaml")
-    my_agent = MyAgent(target_path, **kwargs)
     for k in range(len(init_states)):
+        my_agent = MyAgent(target_path, **kwargs)
         observation, info = gym_env.reset()
         start_time = time()
 
