@@ -1,4 +1,4 @@
-from nvidia/cudagl:11.4.2-devel-ubuntu20.04
+from nvidia/cuda:12.4.1-devel-ubuntu22.04
 
 ENV TZ=Asia/Shanghai
 ENV NVIDIA_VISIBLE_DEVICES all
@@ -14,16 +14,16 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
         python3-pip python3-tk \
         psmisc software-properties-common tree vim wget zip \
     # Install gl/x package for visualization inside docker
-    && apt-get install -y libglvnd0 libgl1 libglx0 libegl1 libxext6 libx11-6 \
+    && apt-get install -y libglvnd0 libgl1 libglx0 libegl1 libxext6 libx11-6 
     # # Install gcc9
     # && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
     # && apt-get update \
-    && apt install -y gcc-9 g++-9 \
+    # && apt install -y gcc-9 g++-9 \
     # Install cmake 3.16.3
-    && cd /root && wget --no-check-certificate https://cmake.org/files/v3.16/cmake-3.16.3.tar.gz \
-    && tar -xf cmake-3.16.3.tar.gz && cd cmake-3.16.3 \
-    && ./bootstrap && make -j4 && make install \
-    && cd /root && rm -rf cmake-3.16.3 cmake-3.16.3.tar.gz
+    # && cd /root && wget --no-check-certificate https://cmake.org/files/v3.16/cmake-3.16.3.tar.gz \
+    # && tar -xf cmake-3.16.3.tar.gz && cd cmake-3.16.3 \
+    # && ./bootstrap && make -j4 && make install \
+    # && cd /root && rm -rf cmake-3.16.3 cmake-3.16.3.tar.gz
 
 # Install mujoco, gym and their dependency
 RUN pip3 install numpy==1.26.4 transforms3d==0.4.1 mujoco==3.1.3 scipy==1.12.0 gymnasium==0.29.1  joblib==1.3.2 matplotlib==3.5.1 kinpy==0.4.2  
