@@ -32,7 +32,7 @@ class KeyboradAgent(AgentBase):
             self.gripper_target = key[0]
         else:
             target_joint_velocity = pinv(self.jac) @ key*0.1
-            self.target_joints = qInit + target_joint_velocity*0.1
+            self.target_joints = self.target_joints + target_joint_velocity*0.1
         action[0:7] = self.target_joints
         action[7] = self.gripper_target
         return action , self.is_success

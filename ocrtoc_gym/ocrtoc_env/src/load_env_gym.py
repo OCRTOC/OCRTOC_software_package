@@ -37,7 +37,7 @@ class FrankaEnv(gym.Env):
         self.action_size = 8
         ## Gravity compensation
         self.model.body_gravcomp = 0.0  
-        body_names = ['hand', 'left_finger', 'link0', 'link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7', 'right_finger',"d435i","d435i_link","d435i2","d435i2_link"]         # Name of bodies we wish to apply gravity compensation to.
+        body_names = ['hand', 'left_finger', 'link0', 'link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7', 'right_finger',"d435i","d435i_link","d435i2","d435i2_link","fix_camera_depth_frame","fix_camera_rgb_frame","in_hand_camera_depth_frame","in_hand_camera_rgb_frame"]         # Name of bodies we wish to apply gravity compensation to.
         body_ids = [self.model.body(name).id for name in body_names]
         if self.gravity_compensation:
             self.model.body_gravcomp[body_ids] = 1.0
