@@ -224,8 +224,13 @@ class ScoreCalculator():
             log_file.write('{}: {}\n'.format(mesh_name, score))
         log_file.write('{}\nScene Index:{}, \nScene mean score:{}, \nMean Rearrangement per hour:{}'.format(
             '-' * 60 + '\n' + '-' * 60, self.task_index, scene_score, scene_score_time))
+<<<<<<<< HEAD:ocrtoc_gym/ocrtoc_env/src/compute_score.py
         log_file.write('\n')
         log_file.write('\n')
         print('\033[032m\nScene mean score:{}\033[0m'.format(scene_score))
         return scene_score, scene_score_time
+========
+        rospy.loginfo('\033[032m\nScene mean score:{}\033[0m'.format(scene_score))
+        return scene_score
+>>>>>>>> origin/master:ocrtoc_task/scripts/calculate_score_from_dump_pose_new.py
 
