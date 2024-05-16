@@ -1,1 +1,0 @@
-python3 match_pairs.py --input_pairs ../data/pair_list_81-90_20210325190931.txt --output_dir 81-90_20210325190931_outdoor --superglue outdoor #--viz

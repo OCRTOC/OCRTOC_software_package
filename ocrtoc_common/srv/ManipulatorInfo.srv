@@ -1,4 +1,0 @@
----
-string[] group_names
-string end_effector_link
-string planning_frame

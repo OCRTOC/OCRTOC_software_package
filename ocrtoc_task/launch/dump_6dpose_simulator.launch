@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <arg name="task_index" default="0-0" doc="Task index."/>
-
-  <node pkg="ocrtoc_task" type="get_6dpose_dump_simulator.py" name="get_6dpose_simulator" output="screen">
-    <param name="task_index" value="$(arg task_index)"/>
-  </node>
-</launch>
