@@ -1,222 +1,175 @@
-import mujoco
+import gymnasium as gym
+from gymnasium import spaces
 import numpy as np
-from gymnasium.core import ObsType
-from gymnasium_robotics.envs.robot_env import MujocoRobotEnv
-# from gymnasium_robotics.utils import rotations
-from typing import Optional, Any, SupportsFloat
-from matplotlib import pyplot as plt
-import math
-# import open3d as o3d
+import mujoco
+import mujoco.viewer
+import time
 
-DEFAULT_CAMERA_CONFIG = {
-    "distance": 2.5,
-    "azimuth": 135.0,
-    "elevation": -20.0,
-    "lookat": np.array([0.0, 0.0, 0.0]),
-
-}
-
-
-class FrankaEnv(MujocoRobotEnv):
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-        ],
-        "render_fps": 50,
-    }
-
+class FrankaEnv(gym.Env):
+    '''
+        load Mujoco model and interface it with Gymnasium
+    '''
+    
+    metadata = {"render_modes": ["human", "rgb_array"]}
     def __init__(
         self,
-        model_path: str = "/home/zhen/OCRTOC_software_package/ocrtoc_materials_mujoco/scenes/1-1-1.xml",
-        n_substeps: int = 10,
+        model_path: str = "./OCRTOC_software_package/ocrtoc_materials_mujoco/scenes/1-1-1.xml",
+        n_substeps: int = 50,
+        render_mode = None,
         **kwargs,
     ):
-        self.model_path = model_path
+        # gymnasium metadata
+        assert render_mode is None or render_mode in self.metadata["render_modes"]
+        self.render_mode = render_mode  
 
-        action_size = 8
+        # Mujoco parameters
+        self.model_path = model_path # mujoco model path
+        self.gravity_compensation = True  # Whether to enable gravity compensation.
+        self.dt = 0.1 # Simulation timestep in seconds.
+        self.nstep = n_substeps # mujoco substep
+        self.model = mujoco.MjModel.from_xml_path(self.model_path)
+        self.data = mujoco.MjData(self.model)
+        self.renderer = mujoco.Renderer(self.model, 480,640)
+        
+        # Robot variables
+        self.neutral_joint_values = np.array([0.0, 0.0, 0.0, -1.57, 0.0, 1.57, 0.78, 0.0, 0.0]) # robot home pose
+        self.initial_qvel = np.copy(self.data.qvel) # init vel
+        self.action_size = 8
+        ## Gravity compensation
+        self.model.body_gravcomp = 0.0  
+        body_names = ['hand', 'left_finger', 'link0', 'link1', 'link2', 'link3', 'link4', 'link5', 'link6', 'link7', 'right_finger',"d435i","d435i_link","d435i2","d435i2_link","fix_camera_depth_frame","fix_camera_rgb_frame","in_hand_camera_depth_frame","in_hand_camera_rgb_frame"]         # Name of bodies we wish to apply gravity compensation to.
+        body_ids = [self.model.body(name).id for name in body_names]
+        if self.gravity_compensation:
+            self.model.body_gravcomp[body_ids] = 1.0
+        self.joint_names = [
+            "joint1",
+            "joint2",
+            "joint3",
+            "joint4",
+            "joint5",
+            "joint6",
+            "joint7",
+        ]
+        self.actuator_names = [
+            "actuator1",
+            "actuator2",
+            "actuator3",
+            "actuator4",
+            "actuator5",
+            "actuator6",
+            "actuator7",
+        ]
+        self.joint_names_with_gripper = [
+            "joint1",
+            "joint2",
+            "joint3",
+            "joint4",
+            "joint5",
+            "joint6",
+            "joint7",
+        ]
+        self.dof_ids = np.array([self.model.joint(name).id for name in self.joint_names])
+        self.dof_ids_with_gripper = np.array([self.model.joint(name).id for name in self.joint_names_with_gripper])
 
-        # robot home pose
-        self.neutral_joint_values = np.array([0.0, 0.0, 0.0, -1.57, 0.0, 1.57, 0.78, 0.0, 0.0])
+        self.actuator_ids = np.array([self.model.actuator(name).id for name in self.actuator_names])
+        self.gripper_actuator_ids = self.model.actuator("actuator8").id
 
-        # camera view size 
-        self.width = 1280
-        self.height = 720
-        # self.intrinsics =  o3d.camera.PinholeCameraIntrinsic(self.width,self.height,np.array(self.calIntrinsicMatrix()).reshape((3, 3)))
-        super().__init__(
-            n_actions=action_size,
-            n_substeps=n_substeps,
-            model_path=self.model_path,
-            initial_qpos=self.neutral_joint_values,
-            default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs,
-        )     
-    
-    # overwrite initialize function
-    def _initialize_simulation(self):
-        self.model = self._mujoco.MjModel.from_xml_path(self.fullpath)
-        self.data = self._mujoco.MjData(self.model)
-        self._model_names = self._utils.MujocoModelNames(self.model)
-        self.model.vis.global_.offwidth = self.width
-        self.model.vis.global_.offheight = self.height
-
-        # index used to distinguish arm and gripper joints
-        self.arm_joint_names = self._model_names.joint_names[0:7]
-        self.gripper_joint_names = self._model_names.joint_names[7:9]
-        self._env_setup(self.neutral_joint_values)
-        self.initial_time = self.data.time
-        self.initial_qvel = np.copy(self.data.qvel)
-        from gymnasium.envs.mujoco.mujoco_rendering import MujocoRenderer
-
-        self.mujoco_renderer = MujocoRenderer(
-            self.model, self.data
+        # init
+        ## init GUI
+        if self.render_mode == "human":
+            self.viewer =  mujoco.viewer.launch_passive(model=self.model, data=self.data, show_left_ui=True, show_right_ui=False) 
+        ## init robot 
+        self.data.qpos[0:7] = self.neutral_joint_values[0:7].copy()
+        mujoco.mj_forward(self.model, self.data)
+        if self.render_mode == "human":
+            self.viewer.sync()
+            mujoco.mjv_defaultFreeCamera(self.model, self.viewer.cam)# Initialize the camera view to that of the free camera.
+        
+        # Define obs, action space
+        observation = self._get_obs()
+        self.action_space = spaces.Box(-1.0, 1.0, shape=(self.action_size,), dtype="float32")
+        self.observation_space = spaces.Dict(
+            dict(
+                joints_state=spaces.Box(
+                    -np.inf, np.inf, shape=observation["joints_state"].shape, dtype="float64"
+                ),
+                fix_camera_rgb_image=spaces.Box(
+                    0, 255, shape=observation["fix_camera_rgb_image"].shape, dtype="uint8"
+                ),
+                fix_camera_depth_image=spaces.Box(
+                    -np.inf, np.inf, shape=observation["fix_camera_depth_image"].shape, dtype="float32"
+                ),
+                in_hand_camera_rgb_image=spaces.Box(
+                    0, 255, shape=observation["in_hand_camera_rgb_image"].shape, dtype="uint8"
+                ),
+                in_hand_camera_depth_image=spaces.Box(
+                    -np.inf, np.inf, shape=observation["in_hand_camera_depth_image"].shape, dtype="float32"
+                ),
+            )
         )
 
-    # set env
-    def _env_setup(self, neutral_joint_values):
-        self.data.ctrl[0:7] = neutral_joint_values[0:7]
-        self._mujoco.mj_forward(self.model, self.data)
-
-    # render 
-    def render_images(self):
-        rgb_image = self.mujoco_renderer.render("rgb_array", camera_name="realsense_rgb")
-        depth_image = self.mujoco_renderer.render("depth_array", camera_name="realsense_depth")
-        rgb_image_kinect = self.mujoco_renderer.render("rgb_array", camera_name="realsense2_rgb")
-        depth_image_kinect = self.mujoco_renderer.render("depth_array", camera_name="realsense2_depth")
-        return rgb_image , depth_image, rgb_image_kinect, depth_image_kinect
-    
-    # each simulation step
-    def step(self, action):
-        if np.array(action).shape != self.action_space.shape:
-            raise ValueError("Action dimension mismatch")
-        # action = np.clip(action, self.action_space.low, self.action_space.high)
-        self._set_action(action)
-
-        self._mujoco_step(action)
-      
-        self.render()
-        
-        self._step_callback()
-
-        # visualize depth image 
-        # depth = self.depth_image
-        # plt.imshow(depth, cmap="plasma")
-        # plt.show()
-
-        # visualize color image
-        # plt.imshow(self.rgb_image_kinect)
-        # plt.show()
-
-        # # visualize point cloud 
-        # pcd = o3d.geometry.PointCloud()
-        # pcd.points = o3d.utility.Vector3dVector(self.point_cloud)
-        # o3d.visualization.draw_geometries([self.point_cloud])
-
-        obs = self._get_obs().copy()
-
+    # reset env
+    def reset(self, seed=None, options=None):
+        self.data.qvel[:] = np.copy(self.initial_qvel)
+        self.data.qpos = self.model.key_qpos[0]
+        mujoco.mj_forward(self.model, self.data)
+        if self.render_mode == "human":
+            self.viewer.sync()
+        observation = self._get_obs()
         info = {}
-        terminated = False
-        truncated = False
-        reward = 0
+        return observation,info 
 
-        return obs, reward, terminated, truncated, info
-
-    # not used
-    def compute_reward(self, achieved_goal, desired_goal, info):
-
-            return 0.0
-
-    # set action to controller
-    def _set_action(self, action):
-        self.data.ctrl[0:7] = action[0:7]
-        if action[7] == 1: 
-            self.data.qfrc_applied[7] = 50
-        elif action[7] == -1:
-            self.data.qfrc_applied[7] = -50
-        else:
-            self.data.qfrc_applied[7]  = 0
-
+    # set action to mujoco
+    def _set_action(self,action):
+        self.data.ctrl[self.actuator_ids] = action[self.dof_ids]
+        self.data.qfrc_applied[self.gripper_actuator_ids] = action[-1]
+    
     # get data from simulator
     def _get_obs(self):
         joints_pos = np.array([])
         joints_vel = np.array([])
-        for joint in self._model_names.joint_names:
-            joints_pos = np.append(joints_pos,self._utils.get_joint_qpos(self.model, self.data, joint))
-            joints_vel = np.append(joints_vel,self._utils.get_joint_qvel(self.model, self.data, joint))
-        joints_state = np.concatenate((joints_pos.copy(), joints_vel.copy()))
-
-        self.rgb_image, self.depth_image, self.rgb_image_kinect ,self.depth_image_kinect= self.render_images()
-        self.depth_image = self.depth_image_scale(self.depth_image)
-        self.depth_image_kinect = self.depth_image_scale(self.depth_image_kinect)
-
-        # calculate point cloud
-        # self.point_cloud = self.img_to_pointcloud(self.rgb_image, self.depth_image)
-        # self.point_cloud_kinect = self.img_to_pointcloud(self.rgb_image_kinect, self.depth_image_kinect)
-
+        joints_pos = np.append(joints_pos,self.data.qpos.copy()[self.dof_ids_with_gripper])
+        joints_vel = np.append(joints_vel,self.data.qvel.copy()[self.dof_ids_with_gripper])
+        joints_state = np.concatenate((joints_pos.copy(), joints_vel.copy()),dtype=np.float64)
+        self._render_frame()            
         obs = {
             "joints_state":joints_state.copy(),
-            "realsense_rgb_image":self.rgb_image.copy(),
-            "realsense_depth_image":self.depth_image.copy(),
-            "realsense2_rgb_image":self.rgb_image_kinect.copy(),
-            "realsense2_depth_image":self.depth_image_kinect.copy()
+            "fix_camera_rgb_image":self.fix_camera_rgb_image.copy(),
+            "fix_camera_depth_image":self.fix_camera_depth_image.copy(),
+            "in_hand_camera_rgb_image":self.in_hand_camera_rgb_image.copy(),
+            "in_hand_camera_depth_image":self.in_hand_camera_depth_image.copy()
         }
         return obs
 
-    # not used
-    def _is_success(self, achieved_goal, desired_goal):
-        return 1.0 
-
-    # not used
-    def _render_callback(self):
-        pass
-
-    # reset env
-    def _reset_sim(self):
-        self.data.time = self.initial_time
-        self.data.qvel[:] = np.copy(self.initial_qvel)
-        self.data.qpos = self.model.key_qpos[0]
-        self._mujoco.mj_forward(self.model, self.data)
-        return True
-    # mujoco simulation step
-    def _mujoco_step(self, action: Optional[np.ndarray] = None):
-        self._mujoco.mj_step(self.model, self.data, nstep=self.n_substeps)
-
-    # not used
-    def goal_distance(self, goal_a, goal_b):
-        assert goal_a.shape == goal_b.shape
-        return np.linalg.norm(goal_a - goal_b, axis=-1)
-
-    # robot home pose
-    def set_joint_neutral(self):
-        # assign value to arm joints
-        for name, value in zip(self.arm_joint_names, self.neutral_joint_values[0:7]):
-            self._utils.set_joint_qpos(self.model, self.data, name, value)
-
-        # assign value to finger joints
-        for name, value in zip(self.gripper_joint_names, self.neutral_joint_values[7:9]):
-            self._utils.set_joint_qpos(self.model, self.data, name, value)
+    # Gymnasium step frequence 10 Hz
+    def step(self, action):
+        step_start = time.time()
+        self._set_action(action)
+        mujoco.mj_step(self.model, self.data, nstep=self.nstep) 
+        if self.render_mode == "human":
+            self.viewer.sync()
+        observation = self._get_obs().copy()
+        info = {}
+        terminated = False
+        truncated = False
+        reward = 0
+        time_until_next_step = self.dt - (time.time() - step_start)
+        if time_until_next_step > 0:
+            time.sleep(time_until_next_step)
+        return observation , reward, terminated, truncated, info
     
-    # not used
-    def _sample_goal(self):
-        goal = np.array([0.0, 0.0, 0.1])    
 
-        return goal
-    
-    # def calIntrinsicMatrix(self):
-    #         f = math.sqrt(self.width * self.width / 4.0 + self.height * self.height / 4.0) / 2.0 / math.tan(self.fov / 2.0 / 180.0 * math.pi)
-    #         return (f, 0.0, self.width / 2.0 - 0.5, 0.0, f, self.height / 2.0 - 0.5, 0.0, 0.0, 1.0)
-    
-    #rescale depth image
-    def depth_image_scale(self,depth_img):
-        extent = self.model.stat.extent
-        near = self.model.vis.map.znear * extent
-        far = self.model.vis.map.zfar * extent
-        scaled_depth_img = near / (1 - depth_img * (1 - near / far))
-        depth_img = scaled_depth_img.squeeze()
-        return depth_img
-    
-    # def img_to_pointcloud(self, rgb, depth):
-    #     im = o3d.geometry.Image(rgb.reshape(self.height,self.width,3).astype("uint8"))
-    #     rgbd = o3d.geometry.RGBDImage.create_from_color_and_depth(im, o3d.geometry.Image(depth), depth_scale = 1 ,convert_rgb_to_intensity = False)
-    #     pcd = o3d.geometry.PointCloud.create_from_rgbd_image(rgbd, self.intrinsics)
-    #     return np.asarray(pcd.points)
+    # rende images
+    def _render_frame(self):
+        self.renderer._depth_rendering = False
+        self.renderer.update_scene(self.data, camera="fix_camera_rgb")
+        self.fix_camera_rgb_image = self.renderer.render()
+        self.renderer._depth_rendering = True
+        self.renderer.update_scene(self.data, camera="fix_camera_depth")
+        self.fix_camera_depth_image = self.renderer.render()
+        self.renderer._depth_rendering = False
+        self.renderer.update_scene(self.data, camera="in_hand_camera_rgb")
+        self.in_hand_camera_rgb_image = self.renderer.render()
+        self.renderer._depth_rendering = True
+        self.renderer.update_scene(self.data, camera="in_hand_camera_depth")
+        self.in_hand_camera_depth_image = self.renderer.render()
