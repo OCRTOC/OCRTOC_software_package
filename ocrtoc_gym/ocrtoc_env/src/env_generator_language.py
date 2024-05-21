@@ -117,7 +117,7 @@ def sense_generate(objects,objects_num,overlap,object_class):
                 init_pos.append(q[2])
 
                 # tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'freejoint')
-                tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'joint',{'type':'free','damping':'1.0','armature':'1.0'})
+                tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'joint',{'type':'free','damping':'0.05','armature':'0.05'})
                 # tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'inertial',{'pos':'0 0 0', 'mass':'0.1', 'fullinertia':'1 1 1 0 0 0'})
                 model_folder = src_model + item
                 for file in os.listdir(model_folder):
@@ -134,7 +134,8 @@ def sense_generate(objects,objects_num,overlap,object_class):
     euler = [0,0,0] #box euler
     k = 1
     for item in object_selected:
-        tree_include_worldbody_body =  ET.SubElement(tree_include_worldbody, 'body',{'name':item+'_box__1', 'pos':list_to_string(pos), 'euler':list_to_string(euler)})
+        tree_include_worldbody_body =  ET.SubElement(tree_include_worldbody, 'body',{'name':'box_'+item+'__0', 'pos':list_to_string(pos), 'euler':list_to_string(euler)})
+        # tree_include_worldbody_body_texture =  ET.SubElement(tree_include_worldbody_body, 'geom',{'name':item+'_box_'+ 'test',  'type':'box', 'group':'1', 'pos':"0 0 0", 'euler':"0 0 0", 'size':".15 .18 .02", 'rgba':"1 0 0 0.3" ,'contype':'0', 'conaffinity':'0'})
         rotation = Rotation.from_euler('XYZ', euler, degrees=False)
         q = rotation.as_quat()
         init_pos.append(pos[0])
@@ -152,7 +153,7 @@ def sense_generate(objects,objects_num,overlap,object_class):
             pos[0] = pos[0] - box_offset
         k+=1
         # tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'freejoint')
-        tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'joint',{'type':'free','damping':'1.0','armature':'1.0'})
+        tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'joint',{'type':'free','damping':'0.05','armature':'0.05'})
         # tree_include_worldbody_body_inertial =  ET.SubElement(tree_include_worldbody_body, 'inertial',{'pos':'0 0 0', 'mass':'0.1', 'fullinertia':'1 1 1 0 0 0'})
         model_folder = src_model + box_name
         for file in os.listdir(model_folder):

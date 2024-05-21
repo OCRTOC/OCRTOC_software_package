@@ -17,6 +17,6 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
 
 
 # Install mujoco, gym and their dependency
-RUN pip3 install numpy==1.26.4 transforms3d==0.4.1 mujoco==3.1.3 scipy==1.12.0 gymnasium==0.29.1  joblib==1.3.2 matplotlib==3.5.1 kinpy==0.4.2  
+RUN pip3 install numpy==1.26.4 transforms3d==0.4.1 mujoco==3.1.3 scipy==1.12.0 gymnasium==0.29.1  joblib==1.3.2 matplotlib==3.9.0 kinpy==0.4.2  
 
 

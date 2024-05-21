@@ -5,4 +5,7 @@
 /scan/
 # SAPIEN cache file
 *.convex.stl
-third_party/
+ocrtoc_gym/ocrtoc_env/evaluation/*.txt
+ocrtoc_gym/ocrtoc_env/result/*.txt
+ocrtoc_materials_mujoco/*
+ocrtoc_materials_mujoco.zip

@@ -1,18 +1,6 @@
 import os
 from gymnasium.envs.registration import register
 
-# ENV_IDS = []
-
-# env_id = f"OCRTOC_Franka-v0"
-
-# register(
-#     id=env_id,
-#     entry_point=f"ocrtoc_env.src.load_env_gym:FrankaEnv",
-#     kwargs={},
-#     max_episode_steps=50,
-# )
-
-# ENV_IDS.append(env_id)
 
 ENV_IDS = []
 

@@ -135,10 +135,7 @@ class ScoreCalculator():
             ax.scatter(points[:, 0], points[:, 1], points[:, 2], s=100, c='k')
 
         plt.gca().patch.set_facecolor('white')
-        ax.w_xaxis.set_pane_color((0.8, 0.8, 0.8, 1.0))
-        ax.w_yaxis.set_pane_color((0.8, 0.8, 0.8, 1.0))
-        ax.w_zaxis.set_pane_color((0.8, 0.8, 0.8, 1.0))
-
+        ax.set_aspect('equal')
         # rotate the axes and update
         ax.view_init(30, 12)
         plt.draw()

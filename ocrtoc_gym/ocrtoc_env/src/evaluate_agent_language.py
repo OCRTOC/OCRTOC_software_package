@@ -4,6 +4,7 @@ import numpy as np
 from joblib import Parallel, delayed
 import gymnasium as gym
 from ocrtoc_agent.agent_builder import MyAgent
+from ocrtoc_env.src.compute_score_language import ScoreCalculator
 from time import time
 from ocrtoc_env.src.env_generator_language import sense_generate
 def evaluate(object_category,object_max_num,overlap,object_class, n_episodes=1080, n_cores=-1, render=False,  **kwargs):
@@ -11,6 +12,8 @@ def evaluate(object_category,object_max_num,overlap,object_class, n_episodes=108
     Function that will run the evaluation of the agent for a given set of environments.
 
     Args:
+        object_category (int): Number of categories 
+        object_max_num (int): Max number of each object
         n_episodes (int, 1080): Number of episodes each environment is evaluated
         n_cores (int, -1): Number of parallel cores which are used for the computation. -1 Uses all cores.
             When using 1 core the program will not be parallelized (good for debugging)
@@ -33,23 +36,21 @@ def evaluate(object_category,object_max_num,overlap,object_class, n_episodes=108
     # for env in env_list:
     env_init_chuncks.append(generate_init_states(n_episodes, n_cores))
 
-    ## Log TODO
-    # log_file_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result')
-    # if not os.path.exists(log_file_dir):
-    #     os.makedirs(log_file_dir)
-    # f = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result', datetime.datetime.now().strftime('eval-%Y-%m-%d_%H-%M-%S.txt')), "a")
+    ## Log result of each run
+    log_file_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result')
+    if not os.path.exists(log_file_dir):
+        os.makedirs(log_file_dir)
+    f = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result', datetime.datetime.now().strftime('eval-%Y-%m-%d_%H-%M-%S.txt')), "w")
+
     for chunks in env_init_chuncks:
         # evaluate 
         data= Parallel(n_jobs=n_cores)(delayed(_evaluate)(chunks[i],  render,  **kwargs) for i in range(n_cores))
         # write score into files
-        # average_score = 0  ##TODO
-        # average_score_time = 0 ## TODO
-
-        # print("OCROTC task: LANGUAGE average score in ", n_episodes, "episodes is ", average_score)
-    #     f.write("OCROTC task: LANGUAGE average score in " + str(n_episodes) + " episodes is " + str(average_score) + " Mean Rearrengement per hour is " + str(average_score_time))
-    #     f.write("\n")
-    # f.close()
-   
+        average_score = sum([d for d in data])/n_episodes
+        print("OCROTC task: LANGUAGE average score in ", n_episodes, "episodes is ", average_score)
+        f.write("OCROTC task: LANGUAGE average score in " + str(n_episodes) + " episodes is " + str(average_score))
+        f.write("\n")
+    f.close()
 
 
 def _evaluate(init_states, render,**kwargs):
@@ -57,7 +58,6 @@ def _evaluate(init_states, render,**kwargs):
         evaluate one episode 
     """
     sum_scene_score = 0
-    sum_scene_score_time = 0 
     if render == True:
         gym_env = gym.make("OCRTOC_Language-v0",render_mode="human")
     else:
@@ -67,7 +67,6 @@ def _evaluate(init_states, render,**kwargs):
         my_agent = MyAgent(target_path, **kwargs)
         observation, info = gym_env.reset()
         start_time = time()
-
         for _ in range(6000):
             action, success= my_agent.draw_action(observation)
             observation, _ , _, _ ,_ = gym_env.step(action)
@@ -76,13 +75,11 @@ def _evaluate(init_states, render,**kwargs):
          
         end_time = time()
         seconds_elapsed = end_time - start_time
-        # score_calculator = ScoreCalculator(env = gym_env, task_index = env, IoU = IoU_threshold, time_cost = seconds_elapsed)
-        # scene_score, scene_score_time = score_calculator.calculate_score(debug)
-        sum_scene_score_time = 0#sum_scene_score_time + scene_score_time
-        sum_scene_score = 0#sum_scene_score + scene_score
+        score_calculator = ScoreCalculator(env = gym_env,time_cost = seconds_elapsed)
+        scene_score = score_calculator.calculate_score()
+        sum_scene_score = sum_scene_score + scene_score
     gym_env.close()
-
-    return sum_scene_score , sum_scene_score_time 
+    return sum_scene_score  
 
 
 def generate_init_states(n_episodes, n_parallel_cores):

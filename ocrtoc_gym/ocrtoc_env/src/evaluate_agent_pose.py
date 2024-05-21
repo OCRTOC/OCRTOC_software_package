@@ -4,9 +4,8 @@ import numpy as np
 from joblib import Parallel, delayed
 import gymnasium as gym
 from ocrtoc_agent.agent_builder import MyAgent
-from ocrtoc_env.src.compute_score import ScoreCalculator
+from ocrtoc_env.src.compute_score_pose import ScoreCalculator
 from time import time
-
 def evaluate(env_list, n_episodes=1080, n_cores=-1, render=False, IoU_threshold=0.8, debug = False, **kwargs):
     """
     Function that will run the evaluation of the agent for a given set of environments. The resulting score is written in ocrtoc_env/result folder.
@@ -38,14 +37,13 @@ def evaluate(env_list, n_episodes=1080, n_cores=-1, render=False, IoU_threshold=
     log_file_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result')
     if not os.path.exists(log_file_dir):
         os.makedirs(log_file_dir)
-    f = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result', datetime.datetime.now().strftime('eval-%Y-%m-%d_%H-%M-%S.txt')), "a")
+    f = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),'result', datetime.datetime.now().strftime('eval-%Y-%m-%d_%H-%M-%S.txt')), "w")
     for env, chunks in zip(env_list, env_init_chuncks):
         # evaluate 
         data= Parallel(n_jobs=n_cores)(delayed(_evaluate)(env, chunks[i],  render, IoU_threshold, debug, **kwargs) for i in range(n_cores))
         # write score into files
         average_score = sum([d[0] for d in data])/n_episodes
         average_score_time = sum([d[1] for d in data])/n_episodes
-
         print("OCROTC task:", env, "average score in ", n_episodes, "episodes is ", average_score)
         f.write("OCROTC task:" + env + " average score in " + str(n_episodes) + " episodes is " + str(average_score) + " Mean Rearrengement per hour is " + str(average_score_time))
         f.write("\n")
@@ -72,7 +70,7 @@ def _evaluate(env,  init_states, render, IoU_threshold, debug,**kwargs):
         observation, info = gym_env.reset()
         start_time = time()
 
-        for _ in range(60000):
+        for _ in range(6000):
             action, success= my_agent.draw_action(observation)
             observation, _ , _, _ ,_ = gym_env.step(action)
             if success:
@@ -85,7 +83,6 @@ def _evaluate(env,  init_states, render, IoU_threshold, debug,**kwargs):
         sum_scene_score_time = sum_scene_score_time + scene_score_time
         sum_scene_score = sum_scene_score + scene_score
     gym_env.close()
-
     return sum_scene_score , sum_scene_score_time 
 
 

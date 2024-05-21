@@ -8,7 +8,8 @@ from ocrtoc_env.src.agent_base import AgentBase
 #         The Agent should inherit from the AgentBase Class.
 
 #         Args:
-#             target_path (string): path to yaml where you can find objects target poses
+#             target_path (string): path to yaml where you can find objects target poses for pose conditioned rearrangement tasks 
+#                                   path to yaml where you can find target language description for language conditioned rearrangement tasks                                                           
 #             kwargs (any): Additionally setting from agent_config.yml
             
 #         '''
