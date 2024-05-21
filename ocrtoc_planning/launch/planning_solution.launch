@@ -1,5 +1,0 @@
-<launch>
-  <!-- run commit_solution actionlib server -->
-  <node name="solution_entrance" pkg="ocrtoc_planning" type="solution_entrance.py" output="screen" />
-
-</launch>

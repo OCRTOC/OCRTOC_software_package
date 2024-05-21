@@ -2,11 +2,11 @@ import sys
 import os
 sys.path.append(os.path.dirname((os.path.abspath(__file__))))
 import ocrtoc_env
-# from ocrtoc_agent.agent_builder import DummyAgent
 from argparse import ArgumentParser
 from pathlib import Path
 import yaml
-from ocrtoc_env.src.evaluate_agent import evaluate
+from ocrtoc_env.src.evaluate_agent_pose import evaluate as evaluate_pose
+from ocrtoc_env.src.evaluate_agent_language import evaluate as evaluate_language
 
 # convert shortcut to full list
 def convert_envs(env_list):
@@ -105,4 +105,9 @@ if __name__ == "__main__":
     del config["env"]
     print("config:", config)
 
-    evaluate(**config)
+    if config["tasks_type"] == "pose":
+        evaluate_pose(**config)
+    elif config["tasks_type"] == "language":
+        evaluate_language(**config)
+    else: 
+        raise AssertionError("Wrong tasks type")

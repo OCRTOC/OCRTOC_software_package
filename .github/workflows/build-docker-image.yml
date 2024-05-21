@@ -2,10 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+    branches: [ "master", "**" ]
+    tags:
+      - '*'
 jobs:
 
   build:
@@ -19,26 +18,15 @@ jobs:
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Download third party
-      run: sh docker/download_thirdparty.sh 
-    - name: Build the Docker image
-      run: |
-        BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-        DOCKER_TAG= echo "$BRANCH" | sed 's#/#_#g'
-        docker build -f docker/Dockerfile -t ocrtoc/ocrtoc2024:latest .
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Push Dockerhub
-      run: |             
-        docker push ocrtoc/ocrtoc2024:latest
     - name: Build the Docker image for Mujoco 
       run: |
-        BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-        DOCKER_TAG= echo "$BRANCH" | sed 's#/#_#g'
-        docker build -f docker/Dockerfile_mujoco -t ocrtoc/ocrtoc2024_mujoco:latest .
+        echo "GITHUB_HEAD_REF  [$GITHUB_HEAD_REF]"
+        echo "GITHUB_REF       [$GITHUB_REF]"
+        echo "GITHUB_REF_NAME  [$GITHUB_REF_NAME]"
+        DOCKER_TAG="$GITHUB_REF_NAME"
+        echo "DOCKER_TAG=$GITHUB_REF_NAME" >> $GITHUB_ENV        
+        echo "Tag image as [$DOCKER_TAG]"
+        docker build -f docker/Dockerfile -t ocrtoc/ocrtoc2024_mujoco:$DOCKER_TAG .
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
@@ -46,4 +34,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Push Dockerhub
       run: |             
-        docker push ocrtoc/ocrtoc2024_mujoco:latest
+        docker push ocrtoc/ocrtoc2024_mujoco:$DOCKER_TAG
+      env:
+        DOCKER_TAG: ${{ env.DOCKER_TAG }}
